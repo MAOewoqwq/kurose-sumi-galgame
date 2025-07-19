@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kurose Sumi's Chat</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=K2D:wght@400;700;800&family=Kiwi+Maru:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <div class="navbar">
+      <div class="navbar-hello">こんにちは</div>
+      <div class="navbar-title">Kurose Sumi's Chat</div>
+      <div class="pixel-heart">
+        <div class="heart-row heart-row-1">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="heart-row heart-row-2">
+          <span></span><span class="filled"></span><span class="filled"></span><span></span><span></span><span class="filled"></span><span class="filled"></span><span></span>
+        </div>
+        <div class="heart-row heart-row-3">
+          <span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span>
+        </div>
+        <div class="heart-row heart-row-4">
+          <span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span>
+        </div>
+        <div class="heart-row heart-row-5">
+          <span></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span></span>
+        </div>
+        <div class="heart-row heart-row-6">
+          <span></span><span></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span></span><span></span>
+        </div>
+        <div class="heart-row heart-row-7">
+          <span></span><span></span><span></span><span class="filled"></span><span class="filled"></span><span></span><span></span><span></span>
+        </div>
+        <div class="heart-row heart-row-8">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="chat-window">
+      <div class="chat-content">
+        <div class="message-display" id="messageDisplay">
+          <div class="speaker-name" id="speakerName">系统</div>
+          <div class="dialog-text" id="dialogText">欢迎来到Kurose Sumi的世界！点击继续开始对话...</div>
+          <div class="continue-hint" id="continueHint">💬 点击继续</div>
+        </div>
+      </div>
+      
+      <div class="input-area">
+        <input type="text" placeholder="输入消息..." readonly>
+        <button>发送</button>
+      </div>
+    </div>
+  </div>
+  
+  <script src="game.js"></script>
+</body>
+</html> 

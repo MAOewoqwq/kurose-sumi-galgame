@@ -1,0 +1,27 @@
+# IDE和编辑器文件
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 日志文件
+*.log
+
+# 临时文件
+*.tmp
+*.temp
+
+# 配置文件（包含敏感信息）
+claude_desktop_config.json
+
+# Node.js 依赖（如果将来使用）
+node_modules/
+npm-debug.log*
+
+# 构建输出（如果将来使用构建工具）
+dist/
+build/
