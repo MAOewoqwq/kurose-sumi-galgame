@@ -5,19 +5,26 @@
       "id": 1,
       "type": "dialog",
       "speaker": "系统",
-      "text": "欢迎来到Kurose Sumi的世界！点击继续开始对话..."
+      "text": "欢迎来到Kurose Sumi的世界！点击继续开始对话...",
+      "background": "1"
     },
     {
       "id": 2,
       "type": "dialog",
       "speaker": "Kurose Sumi",
-      "text": "こんにちは！我是Kurose Sumi，很高兴认识你～"
+      "text": "こんにちは！我是Kurose Sumi，很高兴认识你～",
+      "background": "IMG_3350.PNG",
+      "character": "sumi.png",
+      "position": "right"
     },
     {
       "id": 3,
       "type": "dialog",
       "speaker": "Kurose Sumi",
-      "text": "今天的天气真不错呢，你觉得怎么样？"
+      "text": "今天的天气真不错呢，你觉得怎么样？",
+      "background": "IMG_3350.PNG",
+      "character": "sumi.png",
+      "position": "left"
     },
     {
       "id": 4,

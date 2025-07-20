@@ -47,11 +47,25 @@ body {
   color: #333;
 }
 
+.affection-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .pixel-heart {
   position: relative;
   width: 32px;
   height: 32px;
-  margin-right: 8px;
+}
+
+.affection-value {
+  font-family: 'K2D', Arial, sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #ef81a4;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  min-width: 20px;
 }
 
 .heart-row {
@@ -73,24 +87,76 @@ body {
   height: 450px;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  background: url('assets/backgrounds/IMG_3350.PNG') center/cover no-repeat;
+  /* 测试用红色背景，如果看到红色说明CSS生效但图片路径有问题 */
+  background-color: #ffeeee;
+}
+
+.chat-window::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('assets/backgrounds/IMG_3350.PNG') center/cover no-repeat;
+  opacity: 0.4;
+  z-index: 0;
+  transition: all 0.5s ease;
+}
+
+.chat-window.background-1::before {
+  background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+  opacity: 0.2;
+}
+
+.chat-window.background-2::before {
+  background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%);
+  opacity: 0.2;
+}
+
+.chat-window.background-3::before {
+  background: linear-gradient(135deg, #ffd3a5 0%, #fd9853 100%);
+  opacity: 0.2;
+}
+
+.chat-window.custom-background::before {
+  background: var(--background-image) center/cover no-repeat;
+  opacity: 0.6;
 }
 
 .chat-content {
   flex: 1;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.4);
   padding: 20px;
   border-bottom: 2px solid #A259FF;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .message-display {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.85);
   border: 2px solid #ddd;
   border-radius: 8px;
-  padding: 20px;
+  padding: 8px 12px;
   font-size: 14px;
-  color: #555;
+  color: #333;
   cursor: pointer;
   transition: all 0.3s ease;
+  backdrop-filter: blur(2px);
+  margin-top: auto;
+  width: 70%;
+  min-width: 70%;
+  max-width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 50px;
+  box-sizing: border-box;
 }
 
 .message-display:hover {
@@ -108,10 +174,16 @@ body {
 }
 
 .dialog-text {
-  line-height: 1.6;
-  margin-bottom: 15px;
+  line-height: 1.5;
+  margin-bottom: 10px;
   text-align: left;
-  min-height: 60px;
+  min-height: 40px;
+  font-family: 'K2D', 'Courier New', monospace;
+  font-weight: 500;
+  text-rendering: optimizeSpeed;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  font-smooth: never;
 }
 
 .continue-hint {
@@ -123,10 +195,13 @@ body {
 
 .input-area {
   padding: 15px 20px;
-  background: linear-gradient(90deg, #f8f9fa 0%, #e9ecef 100%);
+  background: rgba(248, 249, 250, 0.9);
   display: flex;
   gap: 10px;
   border-top: 1px solid #ddd;
+  position: relative;
+  z-index: 1;
+  backdrop-filter: blur(5px);
 }
 
 .input-area input {
@@ -159,4 +234,117 @@ body {
 .input-area button:hover {
   background: #b794f6;
   border-color: #b794f6;
+}
+
+/* 角色立绘样式 */
+.character-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.character-sprite {
+  position: absolute;
+  width: 400px !important;
+  height: 567px !important;
+  left: 80px !important;
+  top: 50px !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  max-width: 400px !important;
+  max-height: 567px !important;
+  min-width: 400px !important;
+  min-height: 567px !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  transition: opacity 0.3s ease !important;
+  opacity: 0;
+  filter: brightness(1) contrast(1.1) saturate(1.1) sharpen(1px);
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: auto;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.character-sprite.show {
+  opacity: 1 !important;
+}
+
+.character-sprite.fade-out {
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
+}
+
+.character-sprite.right,
+.character-sprite.left,
+.character-sprite.center {
+  left: 80px !important;
+  right: auto !important;
+  top: 50px !important;
+  bottom: auto !important;
+  width: 400px !important;
+  height: 567px !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  transform: none !important;
+}
+
+/* 玩家输入框样式 */
+.input-container {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  position: absolute;
+  bottom: 8px;
+  left: 12px;
+  right: 12px;
+  z-index: 10;
+}
+
+.player-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 2px solid #c4a4ff;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: 'K2D', Arial, sans-serif;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+}
+
+.player-input:focus {
+  outline: none;
+  border-color: #A259FF;
+  box-shadow: 0 0 8px rgba(162, 89, 255, 0.3);
+}
+
+.confirm-input-btn {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #c4a4ff 0%, #b794f6 100%);
+  color: white;
+  border: 2px solid #c4a4ff;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'K2D', Arial, sans-serif;
+  transition: all 0.3s ease;
+}
+
+.confirm-input-btn:hover {
+  background: linear-gradient(135deg, #b794f6 0%, #a78bfa 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(162, 89, 255, 0.3);
 } 

@@ -1,0 +1,20 @@
+请将你的PNG背景图片放在这个目录下
+
+推荐的背景图片规格：
+- 格式：PNG（支持透明度）
+- 尺寸：800x600 或 1024x768
+- 文件大小：建议小于2MB
+- 风格：适合Galgame的场景图
+
+示例文件名：
+- classroom.png (教室)
+- garden.png (花园)
+- library.png (图书馆)
+- sunset.png (夕阳)
+
+使用方法：
+1. 将图片放入此文件夹
+2. 在剧本中引用：{"background": "classroom.png"}
+
+/Users/apple/Desktop/Sumi/assets/backgrounds/IMG_3350.PNG
+/Users/apple/Downloads/IMG_3350.PNG

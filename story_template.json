@@ -1,0 +1,323 @@
+{
+  "title": "与Kurose Sumi的完整故事",
+  "description": "这是一个示例剧本，展示如何编写完整的Galgame故事",
+  "author": "你的名字",
+  "version": "1.0",
+  "characters": {
+    "sumi": {
+      "name": "Kurose Sumi",
+      "sprites": {
+        "normal": "sumi_normal.png",
+        "smile": "sumi_smile.png", 
+        "sad": "sumi_sad.png",
+        "surprised": "sumi_surprised.png"
+      }
+    },
+    "narrator": {
+      "name": "旁白"
+    }
+  },
+  "backgrounds": {
+    "classroom": "classroom.png",
+    "garden": "garden.png",
+    "library": "library.png",
+    "sunset": "IMG_3350.PNG"
+  },
+  "scenes": [
+    {
+      "id": 1,
+      "type": "scene_change",
+      "title": "第一章：初次相遇",
+      "background": "sunset",
+      "music": "opening.mp3"
+    },
+    {
+      "id": 2,
+      "type": "narration",
+      "speaker": "旁白",
+      "text": "夕阳西下，你来到了这个美丽的地方...",
+      "background": "sunset"
+    },
+    {
+      "id": 3,
+      "type": "dialog",
+      "speaker": "Kurose Sumi",
+      "character": "sumi",
+      "sprite": "normal",
+      "position": "right",
+      "text": "こんにちは！你好，我是Kurose Sumi。很高兴在这里遇见你！",
+      "background": "sunset"
+    },
+    {
+      "id": 4,
+      "type": "dialog",
+      "speaker": "Kurose Sumi",
+      "character": "sumi",
+      "sprite": "smile",
+      "position": "right", 
+      "text": "这里的夕阳真的很美呢！你也是来看夕阳的吗？",
+      "background": "sunset"
+    },
+    {
+      "id": 5,
+      "type": "choice",
+      "speaker": "Kurose Sumi",
+      "character": "sumi",
+      "sprite": "normal",
+      "position": "right",
+      "text": "你想和我一起做什么呢？",
+      "background": "sunset",
+      "choices": [
+        {
+          "text": "一起欣赏夕阳",
+          "next": 6,
+          "affection": "+1"
+        },
+        {
+          "text": "聊聊你的兴趣",
+          "next": 10,
+          "affection": "+1"
+        },
+        {
+          "text": "询问这个地方",
+          "next": 14,
+          "affection": "0"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "dialog",
+      "speaker": "Kurose Sumi",
+      "character": "sumi",
+      "sprite": "smile",
+      "position": "left",
+      "text": "太好了！我最喜欢和朋友一起看夕阳了～",
+      "background": "sunset"
+    },
+    {
+      "id": 7,
+      "type": "narration",
+      "speaker": "旁白",
+      "text": "你们一起静静地欣赏着美丽的夕阳，气氛变得很温馨...",
+      "background": "sunset",
+      "character": "sumi",
+      "sprite": "smile",
+      "position": "left"
+    },
+    {
+      "id": 8,
+      "type": "dialog",
+      "speaker": "Kurose Sumi",
+      "character": "sumi",
+      "sprite": "normal",
+      "position": "center",
+      "text": "和你在一起的时光真的很愉快呢...",
+      "background": "sunset"
+    },
+    {
+      "id": 9,
+      "type": "dialog",
+      "speaker": "Kurose Sumi",
+      "character": "sumi",
+      "sprite": "smile",
+      "position": "center",
+      "text": "希望我们以后还能再见面！",
+      "background": "sunset",
+      "next": 18
+    },
+    {
+      "id": 10,
+      "type": "dialog",
+      "speaker": "Kurose Sumi",
+      "character": "sumi",
+      "sprite": "surprised",
+      "position": "right",
+      "text": "诶？想了解我的兴趣吗？真是意外呢～",
+      "background": "sunset"
+    },
+    {
+      "id": 11,
+      "type": "dialog",
+      "speaker": "Kurose Sumi",
+      "character": "sumi",
+      "sprite": "normal",
+      "position": "left",
+      "text": "我很喜欢看书、听音乐，还有就是画画！",
+      "background": "sunset"
+    },
+    {
+      "id": 12,
+      "type": "dialog",
+      "speaker": "Kurose Sumi",
+      "character": "sumi",
+      "sprite": "smile",
+      "position": "left",
+      "text": "特别是在这种美丽的地方，总是能给我很多灵感呢！",
+      "background": "sunset"
+    },
+    {
+      "id": 13,
+      "type": "dialog",
+      "speaker": "Kurose Sumi",
+      "character": "sumi",
+      "sprite": "normal",
+      "position": "center",
+      "text": "你也有什么特别的爱好吗？我很想听听！",
+      "background": "sunset",
+      "next": 18
+    },
+    {
+      "id": 14,
+      "type": "dialog",
+      "speaker": "Kurose Sumi",
+      "character": "sumi",
+      "sprite": "normal",
+      "position": "right",
+      "text": "这里是我最喜欢的地方之一。",
+      "background": "sunset"
+    },
+    {
+      "id": 15,
+      "type": "dialog",
+      "speaker": "Kurose Sumi",
+      "character": "sumi",
+      "sprite": "smile",
+      "position": "left",
+      "text": "每天傍晚，这里的夕阳都特别美丽！",
+      "background": "sunset"
+    },
+    {
+      "id": 16,
+      "type": "dialog",
+      "speaker": "Kurose Sumi",
+      "character": "sumi",
+      "sprite": "normal",
+      "position": "left",
+      "text": "我经常来这里思考问题，或者只是静静地放松心情。",
+      "background": "sunset"
+    },
+    {
+      "id": 17,
+      "type": "dialog",
+      "speaker": "Kurose Sumi",
+      "character": "sumi",
+      "sprite": "smile",
+      "position": "center",
+      "text": "能和你分享这个特别的地方，我感到很开心！",
+      "background": "sunset"
+    },
+    {
+      "id": 18,
+      "type": "choice",
+      "speaker": "Kurose Sumi",
+      "character": "sumi",
+      "sprite": "normal",
+      "position": "center",
+      "text": "时间过得真快呢...你现在想做什么？",
+      "background": "sunset",
+      "choices": [
+        {
+          "text": "继续聊天",
+          "next": 19
+        },
+        {
+          "text": "一起去别的地方",
+          "next": 22
+        },
+        {
+          "text": "结束今天的相遇",
+          "next": 25
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "type": "dialog",
+      "speaker": "Kurose Sumi",
+      "character": "sumi",
+      "sprite": "smile",
+      "position": "center",
+      "text": "我也想继续和你聊天！时间和你在一起过得特别快呢～",
+      "background": "sunset"
+    },
+    {
+      "id": 20,
+      "type": "dialog",
+      "speaker": "Kurose Sumi",
+      "character": "sumi",
+      "sprite": "normal",
+      "position": "right",
+      "text": "你觉得今天怎么样？有什么特别的感受吗？",
+      "background": "sunset"
+    },
+    {
+      "id": 21,
+      "type": "dialog",
+      "speaker": "Kurose Sumi",
+      "character": "sumi",
+      "sprite": "smile",
+      "position": "center",
+      "text": "不管怎样，今天遇见你真的很开心！希望这只是我们友谊的开始～",
+      "background": "sunset",
+      "next": 1
+    },
+    {
+      "id": 22,
+      "type": "scene_change",
+      "title": "场景：散步",
+      "background": "garden"
+    },
+    {
+      "id": 23,
+      "type": "dialog",
+      "speaker": "Kurose Sumi",
+      "character": "sumi",
+      "sprite": "smile",
+      "position": "left",
+      "text": "好主意！让我们一起去花园走走吧！",
+      "background": "garden"
+    },
+    {
+      "id": 24,
+      "type": "dialog",
+      "speaker": "Kurose Sumi",
+      "character": "sumi",
+      "sprite": "normal",
+      "position": "center",
+      "text": "这里的花朵在夜晚也很美丽呢...和你一起真是太好了！",
+      "background": "garden",
+      "next": 1
+    },
+    {
+      "id": 25,
+      "type": "dialog",
+      "speaker": "Kurose Sumi",
+      "character": "sumi",
+      "sprite": "sad",
+      "position": "center",
+      "text": "要结束了吗...有点舍不得呢。",
+      "background": "sunset"
+    },
+    {
+      "id": 26,
+      "type": "dialog",
+      "speaker": "Kurose Sumi",
+      "character": "sumi",
+      "sprite": "smile",
+      "position": "center",
+      "text": "不过今天真的很开心！希望我们很快能再见面！",
+      "background": "sunset"
+    },
+    {
+      "id": 27,
+      "type": "ending",
+      "speaker": "旁白",
+      "text": "你和Kurose Sumi度过了美好的一天...这个故事还会继续吗？",
+      "background": "sunset",
+      "character": "sumi",
+      "sprite": "smile",
+      "position": "center"
+    }
+  ]
+}

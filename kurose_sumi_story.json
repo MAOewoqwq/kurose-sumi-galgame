@@ -1,0 +1,191 @@
+{
+  "title": "与黒瀨澄的心理诊疗",
+  "description": "超高校级心理分析师黒瀨澄的故事",
+  "author": "你的名字",
+  "version": "1.0",
+  "characters": {
+    "kurose": {
+      "name": "黒瀨澄",
+      "sprites": {
+        "normal": "原始表情.PNG",
+        "smile": "微笑.PNG",
+        "shy": "抱着肩膀.PNG"
+      }
+    }
+  },
+  "backgrounds": {
+    "therapy_room": "IMG_3350.PNG"
+  },
+  "variables": {
+    "player_name": ""
+  },
+  "scenes": [
+    {
+      "id": 1,
+      "type": "dialog",
+      "speaker": "黒瀨澄",
+      "character": "kurose",
+      "sprite": "normal",
+      "position": "center",
+      "text": "……",
+      "background": "therapy_room"
+    },
+    {
+      "id": 2,
+      "type": "dialog",
+      "speaker": "黒瀨澄",
+      "character": "kurose",
+      "sprite": "normal",
+      "position": "center",
+      "text": "你好，初次见面，我叫黒瀨澄",
+      "background": "therapy_room"
+    },
+    {
+      "id": 3,
+      "type": "dialog",
+      "speaker": "黒瀨澄",
+      "character": "kurose",
+      "sprite": "normal",
+      "position": "center",
+      "text": "我的才能是超高校级心理分析师",
+      "background": "therapy_room"
+    },
+    {
+      "id": 4,
+      "type": "dialog",
+      "speaker": "黒瀨澄",
+      "character": "kurose",
+      "sprite": "smile",
+      "position": "center",
+      "text": "请多指教",
+      "background": "therapy_room"
+    },
+    {
+      "id": 5,
+      "type": "input",
+      "speaker": "黒瀨澄",
+      "character": "kurose",
+      "sprite": "normal",
+      "position": "center",
+      "text": "你叫什么名字？",
+      "background": "therapy_room",
+      "input_variable": "player_name",
+      "placeholder": "请输入你的名字..."
+    },
+    {
+      "id": 6,
+      "type": "dialog",
+      "speaker": "黒瀨澄",
+      "character": "kurose",
+      "sprite": "smile",
+      "position": "center",
+      "text": "啊，你好{player_name}",
+      "background": "therapy_room"
+    },
+    {
+      "id": 7,
+      "type": "dialog",
+      "speaker": "黒瀨澄",
+      "character": "kurose",
+      "sprite": "smile",
+      "position": "center",
+      "text": "我一直在这里，你可以把这里当成属于我们的心理诊疗室，在这里你可以说任何事情。",
+      "background": "therapy_room"
+    },
+    {
+      "id": 8,
+      "type": "dialog",
+      "speaker": "黒瀨澄",
+      "character": "kurose",
+      "sprite": "shy",
+      "position": "center",
+      "text": "啊...好像说太多了",
+      "background": "therapy_room"
+    },
+    {
+      "id": 9,
+      "type": "dialog",
+      "speaker": "黒瀨澄",
+      "character": "kurose",
+      "sprite": "shy",
+      "position": "center",
+      "text": "我还不习惯说那么多话呢",
+      "background": "therapy_room"
+    },
+    {
+      "id": 10,
+      "type": "choice",
+      "speaker": "黒瀨澄",
+      "character": "kurose",
+      "sprite": "smile",
+      "position": "center",
+      "text": "嗯...如果你愿意的话，我们可以一起做点什么。你想...",
+      "background": "therapy_room",
+      "choices": [
+        {
+          "text": "🍰 邀请她一起吃蛋糕",
+          "next": 11,
+          "affection": 1
+        },
+        {
+          "text": "🎠 邀请她一起去游乐园",
+          "next": 12,
+          "affection": -1
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "dialog",
+      "speaker": "黒瀨澄",
+      "character": "kurose",
+      "sprite": "smile",
+      "position": "center",
+      "text": "蛋糕...听起来很不错呢。我很久没有和别人一起享用甜点了。",
+      "background": "therapy_room",
+      "next": 13
+    },
+    {
+      "id": 12,
+      "type": "dialog",
+      "speaker": "黒瀨澄",
+      "character": "kurose",
+      "sprite": "normal",
+      "position": "center",
+      "text": "游乐园...那种吵闹的地方，我可能不太适合。",
+      "background": "therapy_room",
+      "next": 13
+    },
+    {
+      "id": 13,
+      "type": "dialog",
+      "speaker": "黒瀨澄",
+      "character": "kurose",
+      "sprite": "smile",
+      "position": "center",
+      "text": "嗯...如果你想的话，我们可以继续聊聊。你有什么想说的吗？",
+      "background": "therapy_room",
+      "next": 14
+    },
+    {
+      "id": 14,
+      "type": "free_chat",
+      "speaker": "黒瀨澄",
+      "character": "kurose",
+      "sprite": "normal",
+      "position": "center",
+      "text": "现在你可以和我自由对话了。有什么想聊的吗？",
+      "background": "therapy_room"
+    },
+    {
+      "id": 15,
+      "type": "ending",
+      "speaker": "系统",
+      "text": "与黒瀨澄的初次相遇结束了...",
+      "background": "therapy_room",
+      "character": "kurose",
+      "sprite": "smile",
+      "position": "center"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "kurose-sumi-galgame",
+  "version": "1.0.0",
+  "description": "黒瀨澄的心理诊疗 - 弹丸论破风格视觉小说",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python -m http.server 3000",
+    "build": "echo 'Static site ready for deployment'"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": "18.x"
+  }
+}

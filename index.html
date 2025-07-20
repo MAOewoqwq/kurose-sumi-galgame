@@ -12,8 +12,9 @@
     <div class="navbar">
       <div class="navbar-hello">こんにちは</div>
       <div class="navbar-title">Kurose Sumi's Chat</div>
-      <div class="pixel-heart">
-        <div class="heart-row heart-row-1">
+      <div class="affection-container">
+        <div class="pixel-heart">
+          <div class="heart-row heart-row-1">
           <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
         </div>
         <div class="heart-row heart-row-2">
@@ -37,10 +38,17 @@
         <div class="heart-row heart-row-8">
           <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
         </div>
+        </div>
+        <div class="affection-value" id="affectionValue">0</div>
       </div>
     </div>
     
     <div class="chat-window">
+      <!-- 角色立绘容器 -->
+      <div class="character-container" id="characterContainer">
+        <img class="character-sprite" id="characterSprite" src="" alt="角色立绘" style="display: none;">
+      </div>
+      
       <div class="chat-content">
         <div class="message-display" id="messageDisplay">
           <div class="speaker-name" id="speakerName">系统</div>
