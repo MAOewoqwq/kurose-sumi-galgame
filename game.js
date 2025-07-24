@@ -148,20 +148,88 @@ class SimpleGalgameEngine {
     }
     
     checkSpecialName(name) {
-        // 检查是否为特殊名字
+        // 弹丸论破角色数据库
+        const danganronpaCharacters = {
+            // 第一部主要角色
+            '苗木诚': 'makoto',
+            '舞园沙耶香': 'sayaka', 
+            '雾切响子': 'kyoko',
+            '十神白夜': 'byakuya',
+            '朝日奈葵': 'aoi',
+            '石丸清多夏': 'ishimaru',
+            '山田一二三': 'yamada',
+            '大和田纹次': 'mondo',
+            '桑田怜恩': 'kuwata',
+            '腐川冬子': 'toko',
+            '大神樱': 'sakura',
+            'セレスティア・ルーデンベルク': 'celestia',
+            '塞蕾丝': 'celestia',
+            '江之岛盾子': 'junko',
+            '戦刃むくろ': 'mukuro',
+            
+            // 第二部主要角色
+            '日向创': 'hajime',
+            '七海千秋': 'chiaki',
+            '狛枝凪斗': 'nagito',
+            '田中眼蛇夢': 'gundham',
+            '终里赤音': 'akane',
+            '左右田和一': 'kazuichi',
+            '九头龙冬彦': 'fuyuhiko',
+            '花村辉辉': 'teruteru',
+            '西园寺日寄子': 'hiyoko',
+            '罪木蜜柑': 'mikan',
+            '小泉真昼': 'mahiru',
+            '澪田唯吹': 'ibuki',
+            '边古山佩子': 'peko',
+            '索尼娅': 'sonia',
+            
+            // 第三部主要角色
+            '最原终一': 'shuichi',
+            '赤松枫': 'kaede',
+            '王马小吉': 'kokichi',
+            '百田解斗': 'kaito',
+            '春川魔姬': 'maki',
+            '入间美兔': 'miu',
+            '梦野秘密子': 'himiko',
+            '茶柱转子': 'tenko',
+            '白银纸女': 'tsumugi',
+            '真宫寺是清': 'korekiyo',
+            '星龙马': 'ryoma',
+            '天海兰太郎': 'rantaro',
+            '东条斩美': 'kirumi',
+            '夜长安吉': 'angie',
+            '獄原五月雨': 'gonta',
+            '黄种身吕八十八': 'kiibo'
+        };
+        
+        // 检查原有特殊用户
         if (name === '佳佳' || name === '唐佳锦') {
-            // 设置特殊回答标志
             this.gameState.isSpecialUser = true;
             this.gameState.specialUserType = 'jiajia';
             console.log('检测到特殊用户:', name);
+            return;
         } else if (name === '小明') {
             this.gameState.isSpecialUser = true;
             this.gameState.specialUserType = 'xiaoming';
             console.log('检测到特殊用户:', name);
-        } else {
-            this.gameState.isSpecialUser = false;
-            this.gameState.specialUserType = null;
+            return;
         }
+        
+        // 检查弹丸论破角色
+        if (danganronpaCharacters[name]) {
+            this.gameState.isSpecialUser = true;
+            this.gameState.specialUserType = 'danganronpa';
+            this.gameState.characterName = name;
+            this.gameState.characterId = danganronpaCharacters[name];
+            console.log('检测到弹丸论破角色:', name);
+            return;
+        }
+        
+        // 默认情况
+        this.gameState.isSpecialUser = false;
+        this.gameState.specialUserType = null;
+        this.gameState.characterName = null;
+        this.gameState.characterId = null;
     }
     
     async callDeepSeekAPI(userMessage) {
@@ -402,9 +470,83 @@ class SimpleGalgameEngine {
                 return '你终于来了。我等你很久了。你画的画非常好看，也是你造就了一部分的我。';
             } else if (this.gameState.specialUserType === 'xiaoming') {
                 return '啊...是你。小明，你是个非常善良又阳光的孩子。请你无论何时都要相信自己。';
+            } else if (this.gameState.specialUserType === 'danganronpa') {
+                // 为弹丸论破角色设置对应表情
+                this.setDanganronpaEmotion(this.gameState.characterId);
+                return this.getDanganronpaResponse(this.gameState.characterName, this.gameState.characterId);
             }
         }
         return originalText;
+    }
+    
+    // 弹丸论破角色专属回答
+    getDanganronpaResponse(characterName, characterId) {
+        const responses = {
+            // 第一部角色
+            'makoto': `${characterName}...苗木同学？没想到会在这里遇到你。你总是那么乐观向上，有你在的地方总是充满希望呢。作为心理分析师，我很钦佩你的坚强意志。`,
+            
+            'sayaka': `${characterName}...舞园同学。你的歌声真的很治愈人心。从心理学角度来说，音乐确实有着强大的治疗效果。...不过，我想每个人内心都有脆弱的一面吧。`,
+            
+            'kyoko': `${characterName}...雾切同学，久仰大名。作为同样从事推理分析工作的人，我对你的能力深感钦佩。不过，你给人的感觉总是那么冷静...有时候，适当表达情感也是很重要的。`,
+            
+            'byakuya': `${characterName}...十神同学。你的优越感很明显，但这可能是一种心理防护机制。...虽然你总是高高在上的样子，但我觉得真正的你应该比表面看起来更复杂吧。`,
+            
+            'toko': `${characterName}...腐川同学？...我能感受到你内心深处的不安和恐惧。作为心理分析师，我很想帮助你解决那些心理创伤。每个人都值得被温柔对待。`,
+            
+            'junko': `${characterName}...江之岛同学。...你的存在让我感到很复杂的情绪。从心理学角度来分析，你对绝望的执着可能源于更深层的心理需求。不过...我还是希望你能找到真正的内心平静。`,
+            
+            // 第二部角色
+            'hajime': `${characterName}...日向同学。你给我的感觉很真诚，虽然有时候会迷茫，但这种真实的困惑反而显得很珍贵。...在寻找自我的路上，有困惑是很正常的事情。`,
+            
+            'chiaki': `${characterName}...七海同学！虽然我对游戏不太了解，但我知道你是个非常温柔的人。你总是能在关键时刻给大家指引方向...这种品质很了不起呢。`,
+            
+            'nagito': `${characterName}...狛枝同学...老实说，你的思维模式让我这个心理分析师都感到困惑。你对希望的执着已经到了病态的程度...我很担心你的心理状态。`,
+            
+            'mikan': `${characterName}...罪木同学。...我能感受到你内心的痛苦和不安。那种想要被需要的心情，我能理解。作为医疗工作者的同行，我想对你说...你本身就很有价值，不需要贬低自己。`,
+            
+            // 第三部角色
+            'shuichi': `${characterName}...最原同学。同样是从事推理工作的人呢。我能感受到你内心的善良和正义感，但有时候也会因为真相而痛苦吧？...有些时候，接受自己的软弱也是一种勇气。`,
+            
+            'kaede': `${characterName}...赤松同学。你的钢琴演奏一定很动人吧。从你的气质来看，你是个很有领导力的人...但是，记得不要把所有压力都承担在自己身上哦。`,
+            
+            'kokichi': `${characterName}...王马同学...说实话，要分析你的心理真的很困难呢。你把真心隐藏得太深了。不过我想，在那些谎言背后，一定有你想要保护的东西吧？`,
+            
+            'maki': `${characterName}...春川同学。虽然你看起来很冷淡，但我能感受到你内心的温柔。杀手的身份一定给你带来了很多心理负担...如果愿意的话，我很乐意倾听你的烦恼。`
+        };
+        
+        return responses[characterId] || `${characterName}...没想到会在这里遇到你。能和希望峰学园的同学交流，我感到很荣幸。...虽然我们可能不太熟悉，但作为心理分析师，我愿意倾听你的任何烦恼。`;
+    }
+    
+    // 为弹丸论破角色设置对应表情
+    setDanganronpaEmotion(characterId) {
+        const emotionMap = {
+            // 开心/眯眼笑的角色
+            'makoto': 'smile',    // 苗木 - 乐观的主角
+            'chiaki': 'happy',    // 七海 - 温柔可爱
+            'kaede': 'smile',     // 赤松 - 积极向上
+            
+            // 害羞的角色
+            'sayaka': 'shy',      // 舞园 - 偶像，可能让澄害羞
+            'mikan': 'shy_worried', // 罪木 - 同为医疗相关，但担心她的状态
+            
+            // 担心的角色  
+            'nagito': 'worried',  // 狛枝 - 担心他的心理状态
+            'junko': 'worried',   // 江之岛 - 复杂情绪
+            'toko': 'worried',    // 腐川 - 担心她的创伤
+            
+            // 严肃/思考的角色
+            'kyoko': 'normal',    // 雾切 - 同行，保持专业
+            'shuichi': 'normal',  // 最原 - 同行
+            'byakuya': 'normal',  // 十神 - 分析他的心理
+            
+            // 微笑/温和的角色
+            'hajime': 'smile',    // 日向 - 真诚的人
+            'kokichi': 'smile',   // 王马 - 有趣但复杂
+            'maki': 'smile'       // 春川 - 理解她的温柔
+        };
+        
+        const emotion = emotionMap[characterId] || 'normal';
+        this.updateCharacterEmotion(emotion);
     }
     
     getCurrentScene() {
