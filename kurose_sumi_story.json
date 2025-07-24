@@ -214,11 +214,11 @@
     {
       "id": 17,
       "type": "dialog",
-      "speaker": "黒瀨澄",
-      "character": "kurose",
-      "sprite": "smile",
+      "speaker": "狛枝凪斗",
+      "character": "nagito",
+      "sprite": "normal",
       "position": "center",
-      "text": "那我们就继续聊天吧。我很想了解你的想法。",
+      "text": "啊...黑濑同学竟然愿意和我这样的人交流。哈哈...不过，像我这样毫无价值的人，真的值得你花时间分析吗？你的关心对我来说太过珍贵了...我只是个普通的幸运学生而已。",
       "background": "therapy_room",
       "next": "free_chat"
     }
