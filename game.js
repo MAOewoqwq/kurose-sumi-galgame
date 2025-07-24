@@ -13,7 +13,8 @@ class SimpleGalgameEngine {
         
         // API配置
         this.apiConfig = {
-            endpoint: '/api/chat' // 使用本地API端点
+            endpoint: '/api/chat', // Vercel API端点
+            fallbackEnabled: true // 启用本地回退模式
         };
         
         this.messageDisplay = document.getElementById('messageDisplay');
@@ -180,11 +181,185 @@ class SimpleGalgameEngine {
             }
             
             const data = await response.json();
+            
+            // 根据用户输入和AI回复内容自动选择表情
+            const emotion = this.analyzeEmotion(userMessage, data.reply);
+            this.updateCharacterEmotion(emotion);
+            
             return data.reply;
             
         } catch (error) {
             console.error('API调用失败:', error);
+            
+            // 本地回退模式：根据用户输入生成简单回复
+            if (this.apiConfig.fallbackEnabled) {
+                const fallbackReply = this.generateFallbackReply(userMessage);
+                const emotion = this.analyzeEmotion(userMessage, fallbackReply);
+                this.updateCharacterEmotion(emotion);
+                return fallbackReply;
+            }
+            
+            this.updateCharacterEmotion('worried');
             return '抱歉，我现在有些困惑...能再说一遍吗？';
+        }
+    }
+    
+    // 本地回退模式：根据用户输入生成个性化回复
+    generateFallbackReply(userMessage) {
+        const userLower = userMessage.toLowerCase();
+        
+        // 问候相关 - 体现专业但温和的态度
+        if (userLower.includes('你好') || userLower.includes('早上好') || 
+            userLower.includes('晚上好') || userLower.includes('hi')) {
+            const greetings = [
+                '你好...欢迎来到心理咨询室。今天想和我聊些什么呢？',
+                '嗯，你好。看起来你今天的精神状态还不错...有什么想分享的吗？',
+                '...你好。请坐下吧，这里是一个安全的谈话空间。'
+            ];
+            return greetings[Math.floor(Math.random() * greetings.length)];
+        }
+        
+        // 感谢相关 - 表现出轻微的害羞
+        if (userLower.includes('谢谢') || userLower.includes('感谢')) {
+            const thanks = [
+                '...不用谢。作为心理分析师，帮助别人本来就是我的工作。',
+                '能够帮到你，我也很开心...虽然有点不好意思这么说。',
+                '嗯...这是我应该做的。不过听到你这么说还是会有点开心的。'
+            ];
+            return thanks[Math.floor(Math.random() * thanks.length)];
+        }
+        
+        // 情感倾诉 - 专业的心理分析视角
+        if (userLower.includes('难过') || userLower.includes('伤心') || 
+            userLower.includes('沮丧') || userLower.includes('失落')) {
+            const sadness = [
+                '我从你的话语中感受到了痛苦...这种情感是完全正常的。能告诉我是什么让你感到难过吗？',
+                '...看起来你现在正经历着一些困难的情绪。从心理学角度来说，承认自己的痛苦是治愈的第一步。',
+                '嗯，我能理解这种沮丧的感觉。每个人都会有这样的时候...想和我分析一下原因吗？'
+            ];
+            return sadness[Math.floor(Math.random() * sadness.length)];
+        }
+        
+        // 焦虑担心 - 展现专业分析能力
+        if (userLower.includes('担心') || userLower.includes('害怕') || 
+            userLower.includes('焦虑') || userLower.includes('紧张')) {
+            const anxiety = [
+                '焦虑是一种很常见的情绪反应...让我们一起分析一下你担心的具体内容，这样能帮你更好地理解自己的感受。',
+                '...我注意到你提到了担心。从心理学的角度来看，适度的担心是人类的自我保护机制。你能详细说说吗？',
+                '嗯，紧张的情绪确实不好受。不过我想了解的是，这种担心是基于什么具体的情况呢？'
+            ];
+            return anxiety[Math.floor(Math.random() * anxiety.length)];
+        }
+        
+        // 恋爱相关 - 展现害羞但专业的一面
+        if (userLower.includes('喜欢') || userLower.includes('恋爱') || 
+            userLower.includes('表白') || userLower.includes('暗恋')) {
+            const love = [
+                '...关于感情的事情，确实需要仔细分析。虽然我在这方面经验不多，但从心理学角度可以帮你理清思路。',
+                '嗯...感情问题总是很复杂呢。不过作为心理分析师，我可以帮你分析一下你的内心想法。',
+                '......这种话题让我有点不好意思，但我会尽我所能帮你分析的。你能说得具体一些吗？'
+            ];
+            return love[Math.floor(Math.random() * love.length)];
+        }
+        
+        // 被欺负相关 - 展现保护欲和专业判断
+        if (userLower.includes('被欺负') || userLower.includes('不公平') || 
+            userLower.includes('委屈') || userLower.includes('讨厌')) {
+            const bullying = [
+                '...这样的经历确实会让人感到愤怒和无助。没有人应该承受这样的对待。你能告诉我具体发生了什么吗？',
+                '听起来你遇到了很不公平的事情。从你的描述中，我能感受到你的委屈...这种情绪反应是完全可以理解的。',
+                '这种经历对任何人来说都是痛苦的。作为心理分析师，我想更深入地了解这件事对你造成的影响。'
+            ];
+            return bullying[Math.floor(Math.random() * bullying.length)];
+        }
+        
+        // 询问相关 - 体现思考过程
+        if (userLower.includes('什么') || userLower.includes('怎么') || 
+            userLower.includes('为什么') || userLower.includes('?') || userLower.includes('？')) {
+            const questions = [
+                '...这是个很有意思的问题。让我想想该怎么从心理学的角度来解释。',
+                '嗯，你问的这个问题需要我仔细思考一下...每个人的情况都不太一样呢。',
+                '从心理分析的角度来看...这确实是一个值得深入探讨的问题。'
+            ];
+            return questions[Math.floor(Math.random() * questions.length)];
+        }
+        
+        // 积极情绪
+        if (userLower.includes('开心') || userLower.includes('高兴') || 
+            userLower.includes('快乐') || userLower.includes('兴奋')) {
+            const happiness = [
+                '看到你这么开心，我也跟着高兴起来了...能分享一下是什么让你这么快乐吗？',
+                '...你的快乐情绪很有感染力呢。从心理学角度来说，积极情绪对身心健康都很有益。',
+                '嗯，你现在的状态看起来很不错。这种正面的情绪很珍贵，值得好好珍惜。'
+            ];
+            return happiness[Math.floor(Math.random() * happiness.length)];
+        }
+        
+        // 默认回复 - 更有个性和深度
+        const defaultReplies = [
+            '...我在仔细听你说话。从你的表达中，我能感受到一些复杂的情绪。能再详细说说吗？',
+            '嗯，从心理学的角度来分析，每个人的想法都有其独特的原因...你愿意和我分享更多吗？',
+            '我正在思考你刚才说的话...作为心理分析师，我想更深入地了解你的内心想法。',
+            '...你的话让我想到了一些心理学理论。不过我更想听听你自己是怎么看待这件事的。',
+            '从你的语言中，我观察到了一些有意思的细节...这可能反映了你内心的某些想法。'
+        ];
+        
+        return defaultReplies[Math.floor(Math.random() * defaultReplies.length)];
+    }
+    
+    // 分析用户输入和AI回复的情感内容
+    analyzeEmotion(userMessage, aiReply) {
+        const userLower = userMessage.toLowerCase();
+        const replyLower = aiReply.toLowerCase();
+        
+        // 生气/不满相关关键词
+        if (userLower.includes('被欺负') || userLower.includes('不公平') || 
+            userLower.includes('讨厌') || userLower.includes('烦') ||
+            userLower.includes('生气') || userLower.includes('愤怒') ||
+            replyLower.includes('不应该') || replyLower.includes('不对')) {
+            return 'angry';
+        }
+        
+        // 担心/忧虑相关关键词
+        if (userLower.includes('担心') || userLower.includes('害怕') ||
+            userLower.includes('焦虑') || userLower.includes('紧张') ||
+            userLower.includes('不安') || userLower.includes('困扰') ||
+            replyLower.includes('理解你的担心') || replyLower.includes('不用担心')) {
+            return 'worried';
+        }
+        
+        // 害羞/恋爱相关关键词
+        if (userLower.includes('喜欢') || userLower.includes('恋爱') ||
+            userLower.includes('表白') || userLower.includes('心动') ||
+            userLower.includes('暗恋') || userLower.includes('约会') ||
+            replyLower.includes('感情') || replyLower.includes('心意')) {
+            return Math.random() > 0.5 ? 'shy' : 'shy_worried';
+        }
+        
+        // 开心/积极相关关键词
+        if (userLower.includes('开心') || userLower.includes('高兴') ||
+            userLower.includes('快乐') || userLower.includes('兴奋') ||
+            userLower.includes('成功') || userLower.includes('谢谢') ||
+            replyLower.includes('很好') || replyLower.includes('棒')) {
+            return Math.random() > 0.6 ? 'happy' : 'smile';
+        }
+        
+        // 微笑/温和相关内容
+        if (replyLower.includes('不错') || replyLower.includes('可以') ||
+            replyLower.includes('理解') || replyLower.includes('支持') ||
+            userLower.includes('你好') || userLower.includes('谢谢')) {
+            return 'smile';
+        }
+        
+        // 默认表情
+        return 'normal';
+    }
+    
+    // 更新角色表情
+    updateCharacterEmotion(emotion) {
+        if (this.script.characters.kurose.sprites[emotion]) {
+            const spriteFile = this.script.characters.kurose.sprites[emotion];
+            this.showCharacter(spriteFile, 'center', emotion);
         }
     }
     

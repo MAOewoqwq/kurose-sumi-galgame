@@ -9,7 +9,11 @@
       "sprites": {
         "normal": "原始表情.PNG",
         "smile": "微笑.PNG",
-        "shy": "抱着肩膀.PNG"
+        "shy": "抱着肩膀.PNG",
+        "worried": "担心.PNG",
+        "shy_worried": "害羞担心.PNG",
+        "angry": "有点生气.PNG",
+        "happy": "眯眼笑.PNG"
       }
     }
   },
