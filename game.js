@@ -471,18 +471,18 @@ class SimpleGalgameEngine {
             } else if (this.gameState.specialUserType === 'xiaoming') {
                 return '啊...是你。小明，你是个非常善良又阳光的孩子。请你无论何时都要相信自己。';
             } else if (this.gameState.specialUserType === 'danganronpa') {
-                // 为弹丸论破角色设置对应表情
-                this.setDanganronpaEmotion(this.gameState.characterId);
-                const response = this.getDanganronpaResponse(this.gameState.characterName, this.gameState.characterId);
-                
-                // 狛枝凪斗的特殊处理：添加对话选项
+                // 狛枝凪斗的特殊处理：直接显示选择，不显示常规回答
                 if (this.gameState.characterId === 'nagito') {
+                    this.setDanganronpaEmotion(this.gameState.characterId);
                     setTimeout(() => {
                         this.showNagitoChoices();
-                    }, 2000); // 2秒后显示选择
+                    }, 1000); // 1秒后显示选择
+                    return ''; // 返回空字符串，不显示常规回答
+                } else {
+                    // 其他弹丸论破角色的正常处理
+                    this.setDanganronpaEmotion(this.gameState.characterId);
+                    return this.getDanganronpaResponse(this.gameState.characterName, this.gameState.characterId);
                 }
-                
-                return response;
             }
         }
         return originalText;
@@ -568,91 +568,42 @@ class SimpleGalgameEngine {
     
     // 显示狛枝凪斗的特殊选择
     showNagitoChoices() {
-        // 清除之前的选择（如果有）
-        const existingChoices = document.querySelector('.nagito-choices');
-        if (existingChoices) {
-            existingChoices.remove();
-        }
+        // 使用游戏现有的选择系统，样式与吃蛋糕、游乐园选择一致
+        const choices = [
+            {
+                text: "💬 和他继续聊天",
+                action: 'continue'
+            },
+            {
+                text: "🚪 离开",
+                action: 'leave'
+            }
+        ];
         
-        // 创建选择容器
-        const choicesContainer = document.createElement('div');
-        choicesContainer.className = 'nagito-choices';
-        choicesContainer.style.cssText = `
-            position: absolute;
-            bottom: 60px;
-            left: 12px;
-            right: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            z-index: 10;
-        `;
+        // 使用现有的showChoices函数显示选择
+        this.showChoices(choices.map(choice => ({
+            ...choice,
+            next: null // 我们用自定义处理，不跳转场景
+        })));
         
-        // 选择1：继续和他聊天
-        const choice1 = document.createElement('button');
-        choice1.textContent = '和他继续聊天';
-        choice1.className = 'choice-button';
-        choice1.style.cssText = `
-            padding: 12px 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 25px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-        `;
-        
-        // 选择2：离开
-        const choice2 = document.createElement('button');
-        choice2.textContent = '离开';
-        choice2.className = 'choice-button';
-        choice2.style.cssText = `
-            padding: 12px 20px;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            border: none;
-            border-radius: 25px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(240, 147, 251, 0.3);
-        `;
-        
-        // 添加悬停效果
-        [choice1, choice2].forEach(button => {
-            button.addEventListener('mouseenter', () => {
-                button.style.transform = 'translateY(-2px)';
-                button.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
-            });
-            button.addEventListener('mouseleave', () => {
-                button.style.transform = 'translateY(0)';
-                button.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+        // 重写选择处理逻辑
+        const choiceButtons = document.querySelectorAll('.choice-button');
+        choiceButtons.forEach((button, index) => {
+            button.removeEventListener('click', this.selectChoice);
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.handleNagitoChoice(choices[index].action);
             });
         });
-        
-        // 绑定点击事件
-        choice1.addEventListener('click', () => {
-            this.handleNagitoChoice('continue');
-        });
-        
-        choice2.addEventListener('click', () => {
-            this.handleNagitoChoice('leave');
-        });
-        
-        choicesContainer.appendChild(choice1);
-        choicesContainer.appendChild(choice2);
-        this.messageDisplay.appendChild(choicesContainer);
     }
     
     // 处理狛枝凪斗的选择
     handleNagitoChoice(choice) {
-        // 移除选择按钮
-        const choicesContainer = document.querySelector('.nagito-choices');
-        if (choicesContainer) {
-            choicesContainer.remove();
-        }
+        // 使用现有的hideChoices函数移除选择按钮
+        this.hideChoices();
+        
+        // 播放点击音效
+        this.playClickSound();
         
         if (choice === 'continue') {
             // 选择继续聊天
@@ -660,7 +611,7 @@ class SimpleGalgameEngine {
             this.updateCharacterEmotion('smile'); // 温和的微笑
             this.typewriterText('其实，我觉得你根本不像看起来的那样疯狂呢。');
             
-            // 2秒后显示狛枝的回应
+            // 3秒后显示狛枝的回应
             setTimeout(() => {
                 this.showNagitoResponse();
             }, 3000);
@@ -671,7 +622,7 @@ class SimpleGalgameEngine {
             this.updateCharacterEmotion('normal');
             this.typewriterText('...还是算了吧。也许现在还不是深入交流的时候。');
             
-            // 3秒后启用自由聊天
+            // 4秒后启用自由聊天
             setTimeout(() => {
                 this.enableFreeChat();
             }, 4000);
