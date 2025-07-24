@@ -191,16 +191,11 @@ class SimpleGalgameEngine {
         } catch (error) {
             console.error('API调用失败:', error);
             
-            // 本地回退模式：根据用户输入生成简单回复
-            if (this.apiConfig.fallbackEnabled) {
-                const fallbackReply = this.generateFallbackReply(userMessage);
-                const emotion = this.analyzeEmotion(userMessage, fallbackReply);
-                this.updateCharacterEmotion(emotion);
-                return fallbackReply;
-            }
-            
-            this.updateCharacterEmotion('worried');
-            return '抱歉，我现在有些困惑...能再说一遍吗？';
+            // 始终使用回退模式，确保用户体验
+            const fallbackReply = this.generateFallbackReply(userMessage);
+            const emotion = this.analyzeEmotion(userMessage, fallbackReply);
+            this.updateCharacterEmotion(emotion);
+            return fallbackReply;
         }
     }
     

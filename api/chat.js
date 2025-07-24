@@ -75,8 +75,11 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error('DeepSeek API error:', error);
+    // 返回更详细的错误信息用于调试
     return res.status(500).json({ 
-      reply: '抱歉，我现在有些困惑...能再说一遍吗？' 
+      reply: '抱歉，我现在有些困惑...能再说一遍吗？',
+      error: error.message,
+      debug: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
 }
