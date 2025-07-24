@@ -373,7 +373,7 @@ class SimpleGalgameEngine {
     }
     
     // 加载特殊剧本
-    async loadSpecialScript(scriptName) {
+    async loadSpecialScript(scriptName, silent = false) {
         try {
             // 保存当前剧本
             if (!this.gameState.originalScript) {
@@ -399,7 +399,9 @@ class SimpleGalgameEngine {
                 Object.assign(this.gameState.variables, newScript.variables);
             }
             
-            console.log('特殊剧本加载成功:', scriptName);
+            if (!silent) {
+                console.log('特殊剧本加载成功:', scriptName);
+            }
             return true;
             
         } catch (error) {
@@ -541,19 +543,22 @@ class SimpleGalgameEngine {
             } else if (this.gameState.specialUserType === 'xiaoming') {
                 return '啊...是你。小明，你是个非常善良又阳光的孩子。请你无论何时都要相信自己。';
             } else if (this.gameState.specialUserType === 'danganronpa') {
-                // 狛枝凪斗的特殊处理：加载专属剧本
+                // 狛枝凪斗的特殊处理：先显示问候，后加载专属剧本
                 if (this.gameState.characterId === 'nagito') {
                     this.setDanganronpaEmotion(this.gameState.characterId);
+                    // 设置标记，在对话显示后加载剧本
                     setTimeout(async () => {
-                        const success = await this.loadSpecialScript('nagito_special.json');
+                        const success = await this.loadSpecialScript('nagito_special.json', true);
                         if (success) {
+                            // 静默加载后直接显示剧本场景
                             this.showCurrentScene();
                         } else {
                             // 加载失败，使用原来的选择方式
                             this.showNagitoChoices();
                         }
-                    }, 1000); // 1秒后加载特殊剧本
-                    return ''; // 返回空字符串，不显示常规回答
+                    }, 3000); // 3秒后加载特殊剧本，让用户先看完问候
+                    // 返回专属问候回答
+                    return this.getDanganronpaResponse(this.gameState.characterName, this.gameState.characterId);
                 } else {
                     // 其他弹丸论破角色的正常处理
                     this.setDanganronpaEmotion(this.gameState.characterId);
