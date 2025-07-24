@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>狛枝对话测试</title>
+</head>
+<body>
+    <h1>狛枝凪斗对话测试页面</h1>
+    <p>当前时间: <span id="time"></span></p>
+    <button onclick="testNagito()">测试狛枝对话</button>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('time').textContent = new Date().toLocaleString();
+        
+        function testNagito() {
+            const nagitoResponse = '狛枝同学，是你啊。你昨天好像没有来学校，是出了什么事了吗？';
+            document.getElementById('result').innerHTML = 
+                '<h3>狛枝凪斗对话内容:</h3>' +
+                '<p style="background: #f0f0f0; padding: 10px; border-left: 4px solid #007acc;">' + 
+                nagitoResponse + '</p>' +
+                '<p>版本: v2025.07.24.15:35</p>';
+        }
+    </script>
+</body>
+</html>
