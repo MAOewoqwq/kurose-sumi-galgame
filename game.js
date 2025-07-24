@@ -398,8 +398,7 @@ class SimpleGalgameEngine {
             this.gameState.specialScriptMode = true;
             
             // 清理狛枝相关状态，避免干扰特殊剧本
-            this.gameState.nagitoGreetingShown = false;
-            this.gameState.nagitoSpecialPending = false;
+            this.clearNagitoStates();
             
             // 初始化变量
             if (newScript.variables) {
@@ -713,7 +712,7 @@ class SimpleGalgameEngine {
                 this.speakerName.textContent = '狛枝凪斗';
                 this.hideCharacter();
                 this.typewriterText('诶？我吗？');
-                this.addAffection(1);
+                this.increaseAffection(1);
                 this.showAffectionGain(1);
                 
                 setTimeout(() => {
@@ -1090,9 +1089,18 @@ class SimpleGalgameEngine {
         if (this.gameState.nagitoNeedChoice && currentScene && currentScene.id === 6) {
             console.log('🔄 狛枝凪斗：跳转到选择场景16');
             this.gameState.nagitoNeedChoice = false;
-            this.currentSceneId = 16;
-            this.showCurrentScene();
-            return;
+            
+            // 验证目标场景是否存在
+            const targetScene = this.script.scenes.find(s => s.id === 16);
+            if (targetScene && targetScene.type === 'choice') {
+                this.currentSceneId = 16;
+                this.showCurrentScene();
+                return;
+            } else {
+                console.error('狛枝目标场景16不存在或类型错误，回退到自由聊天');
+                this.enableFreeChat();
+                return;
+            }
         }
         
         // 如果是选择场景或输入场景，不自动推进
@@ -1216,11 +1224,17 @@ class SimpleGalgameEngine {
         }
     }
     
-    enableFreeChat() {
-        // 清理狛枝凪斗相关状态
+    clearNagitoStates() {
+        // 集中清理所有狛枝凪斗相关状态
         this.gameState.nagitoGreetingShown = false;
         this.gameState.nagitoSpecialPending = false;
         this.gameState.nagitoNeedChoice = false;
+        console.log('🧹 已清理所有狛枝状态');
+    }
+    
+    enableFreeChat() {
+        // 清理狛枝凪斗相关状态
+        this.clearNagitoStates();
         
         console.log('🎮 启用自由聊天模式，已清理狛枝状态');
         
