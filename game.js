@@ -572,14 +572,14 @@ class SimpleGalgameEngine {
             } else if (this.gameState.specialUserType === 'xiaoming') {
                 return '啊...是你。小明，你是个非常善良又阳光的孩子。请你无论何时都要相信自己。';
             } else if (this.gameState.specialUserType === 'danganronpa') {
-                // 狛枝凪斗的特殊处理：显示问候语，下次点击跳转到选择场景
+                // 狛枝凪斗的特殊处理：显示普通问候语，下次点击跳转到选择场景
                 if (this.gameState.characterId === 'nagito') {
-                    console.log('🎯 显示狛枝凪斗专属问候语');
+                    console.log('🎯 狛枝凪斗：显示普通问候语，设置特殊跳转');
                     this.setDanganronpaEmotion(this.gameState.characterId);
                     // 设置标记：下次点击跳转到选择场景16
                     this.gameState.nagitoNeedChoice = true;
-                    // 返回专属问候回答
-                    return this.getDanganronpaResponse(this.gameState.characterName, this.gameState.characterId);
+                    // 返回普通问候语，不返回特殊对话
+                    return originalText; // 让它显示普通的问候语
                 } else {
                     // 其他弹丸论破角色的正常处理
                     this.setDanganronpaEmotion(this.gameState.characterId);
