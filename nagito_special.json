@@ -70,7 +70,7 @@
       "character": "nagito",
       "sprite": "normal",
       "position": "center",
-      "text": "诶？我吗？",
+      "text": "诶？黑濑同学在说我吗？...哈哈，我这样的人竟然能得到超高校级心理分析师的关注，真是太幸运了。",
       "background": "therapy_room",
       "affection": 1,
       "next": 5
@@ -82,7 +82,7 @@
       "character": "nagito",
       "sprite": "normal",
       "position": "center",
-      "text": "哈哈...澄同学真是有趣呢。能够这样理解我，真的让我感到很意外。",
+      "text": "哈哈...黑濑同学真是厉害呢。不过，像我这样毫无价值的人...真的值得被这样理解吗？能够得到你的理解，我感到既幸运又...有些不安呢。",
       "background": "therapy_room",
       "next": 6
     },
@@ -104,7 +104,7 @@
       "character": "nagito",
       "sprite": "normal",
       "position": "center",
-      "text": "...澄同学，你真的很厉害呢。作为心理分析师，你看得比任何人都要深入。",
+      "text": "...黑濑同学，你的洞察力真的很可怕呢。哈哈...不过这样的才能用在我身上，会不会太浪费了？毕竟我只是个...普通的幸运学生而已。",
       "background": "therapy_room",
       "next": 8
     },
@@ -136,7 +136,7 @@
       "character": "nagito",
       "sprite": "normal", 
       "position": "center",
-      "text": "真的吗？澄同学愿意倾听我的想法...这让我感到前所未有的温暖。也许，我确实需要这样的理解。",
+      "text": "真的吗？黑濑同学愿意...倾听我这样的人的想法？...这种温暖的感觉，对我来说太过珍贵了。虽然我不确定自己是否配得上这样的关心，但...也许这就是希望吧。",
       "background": "therapy_room",
       "affection": 2,
       "next": "free_chat"
@@ -148,7 +148,7 @@
       "character": "nagito",
       "sprite": "normal",
       "position": "center", 
-      "text": "嗯，我明白。谢谢你愿意花时间和我交流，澄同学。这已经足够了。",
+      "text": "嗯，我明白。谢谢黑濑同学愿意花时间和我这样的人交流...光是这样就已经让我感到非常幸运了。这份温柔，我会好好珍惜的。",
       "background": "therapy_room",
       "next": "free_chat"
     },
