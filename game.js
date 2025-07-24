@@ -1,7 +1,7 @@
 // Galgame引擎 - MVP版本
 class SimpleGalgameEngine {
     constructor() {
-        console.log('🎮 游戏引擎启动 - 版本: v2025.07.24.15:30 - 狛枝对话已更新');
+        console.log('🎮 游戏引擎启动 - 版本: v2025.07.24.15:45 - 狛枝对话已更新 - 强制部署');
         this.script = null;
         this.currentSceneId = 1;
         this.gameState = {
