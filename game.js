@@ -396,6 +396,10 @@ class SimpleGalgameEngine {
             this.currentSceneId = 1;
             this.gameState.specialScriptMode = true;
             
+            // 清理狛枝相关状态，避免干扰特殊剧本
+            this.gameState.nagitoGreetingShown = false;
+            this.gameState.nagitoSpecialPending = false;
+            
             // 初始化变量
             if (newScript.variables) {
                 Object.assign(this.gameState.variables, newScript.variables);
@@ -1082,7 +1086,7 @@ class SimpleGalgameEngine {
     nextScene() {
         const currentScene = this.getCurrentScene();
         
-        console.log('🔄 nextScene调用 - 当前场景:', currentScene?.id, '特殊剧本模式:', this.gameState.specialScriptMode);
+        console.log('🔄 nextScene调用 - 当前场景:', currentScene?.id, '特殊剧本模式:', this.gameState.specialScriptMode, '场景类型:', currentScene?.type);
         
         // 最高优先级：拦截狛枝凪斗的第6场景，避免自动推进到第7场景
         if (this.gameState.characterId === 'nagito' && 

@@ -25,11 +25,11 @@
     {
       "id": 1,
       "type": "dialog",
-      "speaker": "黒瀨澄",
-      "character": "kurose",
-      "sprite": "worried",
+      "speaker": "狛枝凪斗",
+      "character": "nagito",
+      "sprite": "normal",
       "position": "center",
-      "text": "狛枝凪斗...狛枝同学...老实说，你的思维模式让我这个心理分析师都感到困惑。你对希望的执着已经到了病态的程度...我很担心你的心理状态。",
+      "text": "啊...黑濑同学，没想到你会主动找我交流。哈哈...像我这样的人能得到超高校级心理分析师的关注，真是太幸运了。不过，我真的没什么值得分析的...你的时间用在其他更有价值的人身上会更好吧。",
       "background": "therapy_room",
       "next": 2
     },
