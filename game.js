@@ -547,9 +547,13 @@ class SimpleGalgameEngine {
             } else if (this.gameState.specialUserType === 'danganronpa') {
                 // 狛枝凪斗的特殊处理：先显示问候，点击后加载专属剧本
                 if (this.gameState.characterId === 'nagito') {
+                    console.log('🎯 显示狛枝凪斗专属问候语');
                     this.setDanganronpaEmotion(this.gameState.characterId);
-                    // 设置标记：显示问候语后等待用户点击
-                    this.gameState.nagitoGreetingShown = true;
+                    // 延迟设置标记，确保问候语完全显示后再允许点击
+                    setTimeout(() => {
+                        console.log('✅ 狛枝凪斗问候语显示完成，设置点击标记');
+                        this.gameState.nagitoGreetingShown = true;
+                    }, 500); // 给足够时间让问候语完全显示
                     // 返回专属问候回答
                     return this.getDanganronpaResponse(this.gameState.characterName, this.gameState.characterId);
                 } else {
@@ -1053,26 +1057,40 @@ class SimpleGalgameEngine {
     nextScene() {
         const currentScene = this.getCurrentScene();
         
-        // 如果是选择场景或输入场景，不自动推进
-        if (currentScene && (currentScene.type === 'choice' || currentScene.type === 'input')) {
-            return;
-        }
+        console.log('🔄 nextScene调用 - 当前场景:', currentScene?.id, '狛枝标记:', this.gameState.nagitoGreetingShown, '角色ID:', this.gameState.characterId);
         
-        // 如果是狛枝凪斗的问候语场景，检查是否需要转换为特殊剧本
+        // 最高优先级：拦截狛枝凪斗的第6场景，避免自动推进到第7场景
         if (this.gameState.characterId === 'nagito' && 
             this.gameState.specialUserType === 'danganronpa' && 
-            this.gameState.nagitoGreetingShown &&
             currentScene && currentScene.id === 6) {
-            // 用户点击了问候语，现在加载特殊剧本
-            this.gameState.nagitoGreetingShown = false;
-            this.loadSpecialScript('nagito_special.json', true).then(success => {
-                if (success) {
-                    this.showCurrentScene();
-                } else {
-                    // 加载失败，使用原来的选择方式
-                    this.showNagitoChoices();
-                }
-            });
+            
+            if (this.gameState.nagitoGreetingShown) {
+                console.log('🔄 狛枝凪斗：用户点击问候语，准备加载特殊剧本');
+                this.gameState.nagitoGreetingShown = false;
+                
+                // 显示加载提示
+                this.continueHint.textContent = '⏳ 加载中...';
+                
+                this.loadSpecialScript('nagito_special.json', true).then(success => {
+                    if (success) {
+                        console.log('✅ 狛枝特殊剧本加载成功');
+                        setTimeout(() => {
+                            this.showCurrentScene();
+                        }, 100);
+                    } else {
+                        console.log('❌ 狛枝特殊剧本加载失败，使用备用方案');
+                        this.showNagitoChoices();
+                    }
+                });
+                return;
+            } else {
+                console.log('⏸️ 狛枝凪斗：问候语显示中，阻止自动推进');
+                return; // 阻止推进到第7场景
+            }
+        }
+        
+        // 如果是选择场景或输入场景，不自动推进
+        if (currentScene && (currentScene.type === 'choice' || currentScene.type === 'input')) {
             return;
         }
         

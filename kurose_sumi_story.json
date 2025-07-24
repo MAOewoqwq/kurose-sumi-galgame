@@ -84,7 +84,8 @@
       "sprite": "smile",
       "position": "center",
       "text": "啊，你好{player_name}",
-      "background": "therapy_room"
+      "background": "therapy_room",
+      "next": 7
     },
     {
       "id": 7,
