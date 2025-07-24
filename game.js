@@ -444,6 +444,28 @@ class SimpleGalgameEngine {
         }, 1000);
     }
     
+    // 处理特殊剧本结束
+    handleSpecialScriptEnd() {
+        if (this.gameState.specialScriptMode) {
+            // 显示过渡提示
+            this.continueHint.textContent = '🔄 返回中...';
+            
+            // 返回原始剧本
+            if (this.returnToOriginalScript()) {
+                // 延迟启用自由聊天
+                setTimeout(() => {
+                    this.enableFreeChat();
+                }, 1500);
+            } else {
+                // 如果返回失败，直接启用自由聊天
+                this.enableFreeChat();
+            }
+        } else {
+            // 如果不在特殊剧本模式，直接启用自由聊天
+            this.enableFreeChat();
+        }
+    }
+    
     // 分析用户输入和AI回复的情感内容
     analyzeEmotion(userMessage, aiReply) {
         const userLower = userMessage.toLowerCase();
@@ -1048,6 +1070,9 @@ class SimpleGalgameEngine {
         // 跳转到指定场景
         if (choice.next === 'free_chat') {
             this.handleFreeChatTransition();
+        } else if (choice.next === 'special_end') {
+            // 特殊剧本结束
+            this.handleSpecialScriptEnd();
         } else {
             this.currentSceneId = choice.next;
             this.showCurrentScene();
@@ -1057,12 +1082,13 @@ class SimpleGalgameEngine {
     nextScene() {
         const currentScene = this.getCurrentScene();
         
-        console.log('🔄 nextScene调用 - 当前场景:', currentScene?.id, '狛枝标记:', this.gameState.nagitoGreetingShown, '角色ID:', this.gameState.characterId);
+        console.log('🔄 nextScene调用 - 当前场景:', currentScene?.id, '特殊剧本模式:', this.gameState.specialScriptMode);
         
         // 最高优先级：拦截狛枝凪斗的第6场景，避免自动推进到第7场景
         if (this.gameState.characterId === 'nagito' && 
             this.gameState.specialUserType === 'danganronpa' && 
-            currentScene && currentScene.id === 6) {
+            currentScene && currentScene.id === 6 &&
+            !this.gameState.specialScriptMode) { // 只在主剧本模式下拦截
             
             if (this.gameState.nagitoGreetingShown) {
                 console.log('🔄 狛枝凪斗：用户点击问候语，准备加载特殊剧本');
@@ -1101,6 +1127,11 @@ class SimpleGalgameEngine {
             if (currentScene.next === 'free_chat') {
                 this.handleFreeChatTransition();
                 return;
+            } else if (currentScene.next === 'special_end') {
+                // 特殊剧本结束，返回原始剧本
+                console.log('🔚 特殊剧本结束，返回原始剧本');
+                this.handleSpecialScriptEnd();
+                return;
             }
             // 使用剧本中指定的下一个场景ID
             nextSceneId = currentScene.next;
@@ -1112,6 +1143,13 @@ class SimpleGalgameEngine {
         // 检查下一个场景是否存在
         const nextScene = this.script.scenes.find(scene => scene.id === nextSceneId);
         if (!nextScene) {
+            // 如果在特殊剧本模式且找不到场景，返回原始剧本
+            if (this.gameState.specialScriptMode) {
+                console.log('🔚 特殊剧本结束（找不到下一场景），返回原始剧本');
+                this.handleSpecialScriptEnd();
+                return;
+            }
+            
             // 如果没有下一个场景，检查是否应该循环
             const firstScene = this.script.scenes.find(scene => scene.id === 1);
             if (firstScene) {
@@ -1199,6 +1237,12 @@ class SimpleGalgameEngine {
     }
     
     enableFreeChat() {
+        // 清理狛枝凪斗相关状态
+        this.gameState.nagitoGreetingShown = false;
+        this.gameState.nagitoSpecialPending = false;
+        
+        console.log('🎮 启用自由聊天模式，已清理狛枝状态');
+        
         // 启用底部输入框进行自由聊天
         const inputArea = document.querySelector('.input-area');
         const input = inputArea.querySelector('input');

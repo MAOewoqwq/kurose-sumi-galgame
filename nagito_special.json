@@ -139,7 +139,7 @@
       "text": "真的吗？黑濑同学愿意...倾听我这样的人的想法？...这种温暖的感觉，对我来说太过珍贵了。虽然我不确定自己是否配得上这样的关心，但...也许这就是希望吧。",
       "background": "therapy_room",
       "affection": 2,
-      "next": "free_chat"
+      "next": "special_end"
     },
     {
       "id": 10,
@@ -150,7 +150,7 @@
       "position": "center", 
       "text": "嗯，我明白。谢谢黑濑同学愿意花时间和我这样的人交流...光是这样就已经让我感到非常幸运了。这份温柔，我会好好珍惜的。",
       "background": "therapy_room",
-      "next": "free_chat"
+      "next": "special_end"
     },
     {
       "id": 11,
@@ -161,7 +161,40 @@
       "position": "center",
       "text": "...还是算了吧。也许现在还不是深入交流的时候。每个人都有自己的节奏。",
       "background": "therapy_room",
-      "next": "free_chat"
+      "next": "special_end"
+    },
+    {
+      "id": 12,
+      "type": "dialog",
+      "speaker": "黒瀨澄", 
+      "character": "kurose",
+      "sprite": "smile",
+      "position": "center",
+      "text": "狛枝同学...我能感受到你内心的复杂情感。作为心理分析师，我想告诉你——每个人都值得被理解和关心，包括你。",
+      "background": "therapy_room",
+      "next": "special_end"
+    },
+    {
+      "id": 13,
+      "type": "dialog",
+      "speaker": "黒瀨澄", 
+      "character": "kurose",
+      "sprite": "normal",
+      "position": "center",
+      "text": "不过，我理解你的想法。有时候，给彼此一些空间也是很重要的。如果以后想聊天，随时都可以找我。",
+      "background": "therapy_room",
+      "next": "special_end"
+    },
+    {
+      "id": 14,
+      "type": "dialog",
+      "speaker": "黒瀨澄", 
+      "character": "kurose",
+      "sprite": "worried",
+      "position": "center",
+      "text": "每个人都有自己的节奏，我不会强迫任何人敞开心扉。不过狛枝同学，如果你改变主意了，我会在这里等你的。",
+      "background": "therapy_room",
+      "next": "special_end"
     }
   ]
 }
