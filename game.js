@@ -12,7 +12,8 @@ class SimpleGalgameEngine {
             specialScriptMode: false,
             originalScript: null,
             nagitoSpecialPending: false,
-            nagitoGreetingShown: false
+            nagitoGreetingShown: false,
+            nagitoNeedChoice: false
         };
         
         // API配置
@@ -571,15 +572,12 @@ class SimpleGalgameEngine {
             } else if (this.gameState.specialUserType === 'xiaoming') {
                 return '啊...是你。小明，你是个非常善良又阳光的孩子。请你无论何时都要相信自己。';
             } else if (this.gameState.specialUserType === 'danganronpa') {
-                // 狛枝凪斗的特殊处理：先显示问候，点击后加载专属剧本
+                // 狛枝凪斗的特殊处理：显示问候语，下次点击跳转到选择场景
                 if (this.gameState.characterId === 'nagito') {
                     console.log('🎯 显示狛枝凪斗专属问候语');
                     this.setDanganronpaEmotion(this.gameState.characterId);
-                    // 延迟设置标记，确保问候语完全显示后再允许点击
-                    setTimeout(() => {
-                        console.log('✅ 狛枝凪斗问候语显示完成，设置点击标记');
-                        this.gameState.nagitoGreetingShown = true;
-                    }, 500); // 给足够时间让问候语完全显示
+                    // 设置标记：下次点击跳转到选择场景16
+                    this.gameState.nagitoNeedChoice = true;
                     // 返回专属问候回答
                     return this.getDanganronpaResponse(this.gameState.characterName, this.gameState.characterId);
                 } else {
@@ -1088,35 +1086,13 @@ class SimpleGalgameEngine {
         
         console.log('🔄 nextScene调用 - 当前场景:', currentScene?.id, '特殊剧本模式:', this.gameState.specialScriptMode, '场景类型:', currentScene?.type);
         
-        // 最高优先级：拦截狛枝凪斗的第6场景，避免自动推进到第7场景
-        if (this.gameState.characterId === 'nagito' && 
-            this.gameState.specialUserType === 'danganronpa' && 
-            currentScene && currentScene.id === 6 &&
-            !this.gameState.specialScriptMode) { // 只在主剧本模式下拦截
-            
-            if (this.gameState.nagitoGreetingShown) {
-                console.log('🔄 狛枝凪斗：用户点击问候语，准备加载特殊剧本');
-                this.gameState.nagitoGreetingShown = false;
-                
-                // 显示加载提示
-                this.continueHint.textContent = '⏳ 加载中...';
-                
-                this.loadSpecialScript('nagito_special.json', true).then(success => {
-                    if (success) {
-                        console.log('✅ 狛枝特殊剧本加载成功');
-                        setTimeout(() => {
-                            this.showCurrentScene();
-                        }, 100);
-                    } else {
-                        console.log('❌ 狛枝特殊剧本加载失败，使用备用方案');
-                        this.showNagitoChoices();
-                    }
-                });
-                return;
-            } else {
-                console.log('⏸️ 狛枝凪斗：问候语显示中，阻止自动推进');
-                return; // 阻止推进到第7场景
-            }
+        // 狛枝凪斗的特殊处理：从第6场景跳转到选择场景16
+        if (this.gameState.nagitoNeedChoice && currentScene && currentScene.id === 6) {
+            console.log('🔄 狛枝凪斗：跳转到选择场景16');
+            this.gameState.nagitoNeedChoice = false;
+            this.currentSceneId = 16;
+            this.showCurrentScene();
+            return;
         }
         
         // 如果是选择场景或输入场景，不自动推进
@@ -1244,6 +1220,7 @@ class SimpleGalgameEngine {
         // 清理狛枝凪斗相关状态
         this.gameState.nagitoGreetingShown = false;
         this.gameState.nagitoSpecialPending = false;
+        this.gameState.nagitoNeedChoice = false;
         
         console.log('🎮 启用自由聊天模式，已清理狛枝状态');
         

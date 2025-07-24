@@ -191,6 +191,36 @@
       "character": "kurose",
       "sprite": "smile",
       "position": "center"
+    },
+    {
+      "id": 16,
+      "type": "choice",
+      "background": "therapy_room",
+      "character": "kurose",
+      "sprite": "worried",
+      "position": "center",
+      "text": "",
+      "choices": [
+        {
+          "text": "💬 和他继续聊天",
+          "next": 17
+        },
+        {
+          "text": "🚪 离开",
+          "next": "free_chat"
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "type": "dialog",
+      "speaker": "狛枝凪斗",
+      "character": "nagito",
+      "sprite": "normal",
+      "position": "center",
+      "text": "啊...是黑濑同学吗。哈哈...没想到连超高校级心理分析师都会关心我这样的人。不过，我只是个平凡的幸运学生而已...你的关心对我来说太过珍贵了。...那个，我真的没什么值得分析的，黑濑同学还是去帮助更有价值的人吧。",
+      "background": "therapy_room",
+      "next": "free_chat"
     }
   ]
 }
