@@ -8,7 +8,9 @@ class SimpleGalgameEngine {
             choices: {},
             variables: {},
             affection: 0,
-            freeChatMode: false
+            freeChatMode: false,
+            specialScriptMode: false,
+            originalScript: null
         };
         
         // API配置
@@ -370,6 +372,74 @@ class SimpleGalgameEngine {
         return defaultReplies[Math.floor(Math.random() * defaultReplies.length)];
     }
     
+    // 加载特殊剧本
+    async loadSpecialScript(scriptName) {
+        try {
+            // 保存当前剧本
+            if (!this.gameState.originalScript) {
+                this.gameState.originalScript = {
+                    script: this.script,
+                    sceneId: this.currentSceneId,
+                    gameState: { ...this.gameState }
+                };
+            }
+            
+            const response = await fetch(scriptName);
+            if (!response.ok) {
+                throw new Error(`无法加载剧本: ${response.status}`);
+            }
+            
+            const newScript = await response.json();
+            this.script = newScript;
+            this.currentSceneId = 1;
+            this.gameState.specialScriptMode = true;
+            
+            // 初始化变量
+            if (newScript.variables) {
+                Object.assign(this.gameState.variables, newScript.variables);
+            }
+            
+            console.log('特殊剧本加载成功:', scriptName);
+            return true;
+            
+        } catch (error) {
+            console.error('加载特殊剧本失败:', error);
+            return false;
+        }
+    }
+    
+    // 返回原始剧本
+    returnToOriginalScript() {
+        if (this.gameState.originalScript) {
+            this.script = this.gameState.originalScript.script;
+            this.currentSceneId = this.gameState.originalScript.sceneId;
+            this.gameState.specialScriptMode = false;
+            
+            // 恢复部分游戏状态，但保留好感度
+            const savedAffection = this.gameState.affection;
+            Object.assign(this.gameState, this.gameState.originalScript.gameState);
+            this.gameState.affection = savedAffection;
+            this.gameState.originalScript = null;
+            
+            console.log('已返回原始剧本');
+            return true;
+        }
+        return false;
+    }
+    
+    // 处理转换到自由聊天模式
+    handleFreeChatTransition() {
+        // 如果在特殊剧本模式，返回原始剧本
+        if (this.gameState.specialScriptMode) {
+            this.returnToOriginalScript();
+        }
+        
+        // 启用自由聊天
+        setTimeout(() => {
+            this.enableFreeChat();
+        }, 1000);
+    }
+    
     // 分析用户输入和AI回复的情感内容
     analyzeEmotion(userMessage, aiReply) {
         const userLower = userMessage.toLowerCase();
@@ -471,12 +541,18 @@ class SimpleGalgameEngine {
             } else if (this.gameState.specialUserType === 'xiaoming') {
                 return '啊...是你。小明，你是个非常善良又阳光的孩子。请你无论何时都要相信自己。';
             } else if (this.gameState.specialUserType === 'danganronpa') {
-                // 狛枝凪斗的特殊处理：直接显示选择，不显示常规回答
+                // 狛枝凪斗的特殊处理：加载专属剧本
                 if (this.gameState.characterId === 'nagito') {
                     this.setDanganronpaEmotion(this.gameState.characterId);
-                    setTimeout(() => {
-                        this.showNagitoChoices();
-                    }, 1000); // 1秒后显示选择
+                    setTimeout(async () => {
+                        const success = await this.loadSpecialScript('nagito_special.json');
+                        if (success) {
+                            this.showCurrentScene();
+                        } else {
+                            // 加载失败，使用原来的选择方式
+                            this.showNagitoChoices();
+                        }
+                    }, 1000); // 1秒后加载特殊剧本
                     return ''; // 返回空字符串，不显示常规回答
                 } else {
                     // 其他弹丸论破角色的正常处理
@@ -566,7 +642,7 @@ class SimpleGalgameEngine {
         }
     }
     
-    // 显示狛枝凪斗的特殊选择
+    // 显示狛枝凪斗的特殊选择（备用方案）
     showNagitoChoices() {
         // 使用游戏现有的选择系统，样式与吃蛋糕、游乐园选择一致
         const choices = [
@@ -583,7 +659,7 @@ class SimpleGalgameEngine {
         // 使用现有的showChoices函数显示选择
         this.showChoices(choices.map(choice => ({
             ...choice,
-            next: null // 我们用自定义处理，不跳转场景
+            next: null
         })));
         
         // 重写选择处理逻辑
@@ -597,56 +673,35 @@ class SimpleGalgameEngine {
         });
     }
     
-    // 处理狛枝凪斗的选择
+    // 处理狛枝凪斗的选择（备用方案）
     handleNagitoChoice(choice) {
-        // 使用现有的hideChoices函数移除选择按钮
         this.hideChoices();
-        
-        // 播放点击音效
         this.playClickSound();
         
         if (choice === 'continue') {
-            // 选择继续聊天
             this.speakerName.textContent = '黒瀨澄';
-            this.updateCharacterEmotion('smile'); // 温和的微笑
+            this.updateCharacterEmotion('smile');
             this.typewriterText('其实，我觉得你根本不像看起来的那样疯狂呢。');
             
-            // 3秒后显示狛枝的回应
             setTimeout(() => {
-                this.showNagitoResponse();
+                this.speakerName.textContent = '狛枝凪斗';
+                this.hideCharacter();
+                this.typewriterText('诶？我吗？');
+                this.addAffection(1);
+                this.showAffectionGain(1);
+                
+                setTimeout(() => {
+                    this.speakerName.textContent = '黒瀨澄';
+                    this.showCharacter('原始表情.PNG', 'center', 'normal');
+                    this.enableFreeChat();
+                }, 4000);
             }, 3000);
-            
         } else {
-            // 选择离开
             this.speakerName.textContent = '黒瀨澄';
             this.updateCharacterEmotion('normal');
             this.typewriterText('...还是算了吧。也许现在还不是深入交流的时候。');
-            
-            // 4秒后启用自由聊天
-            setTimeout(() => {
-                this.enableFreeChat();
-            }, 4000);
+            setTimeout(() => this.enableFreeChat(), 4000);
         }
-    }
-    
-    // 显示狛枝凪斗的回应
-    showNagitoResponse() {
-        this.speakerName.textContent = '狛枝凪斗';
-        this.hideCharacter(); // 隐藏黑濑澄的立绘
-        this.typewriterText('诶？我吗？');
-        
-        // 增加好感度
-        this.addAffection(1);
-        
-        // 显示好感度提示
-        this.showAffectionGain(1);
-        
-        // 4秒后启用自由聊天
-        setTimeout(() => {
-            this.speakerName.textContent = '黒瀨澄';
-            this.showCharacter('原始表情.PNG', 'center', 'normal'); // 重新显示黑濑澄
-            this.enableFreeChat();
-        }, 4000);
     }
     
     // 显示好感度获得提示
@@ -669,7 +724,6 @@ class SimpleGalgameEngine {
             animation: affectionGain 2s ease-out forwards;
         `;
         
-        // 添加CSS动画
         if (!document.querySelector('#affection-animation-style')) {
             const style = document.createElement('style');
             style.id = 'affection-animation-style';
@@ -685,8 +739,6 @@ class SimpleGalgameEngine {
         }
         
         document.body.appendChild(gainIndicator);
-        
-        // 2秒后移除
         setTimeout(() => {
             if (gainIndicator.parentNode) {
                 gainIndicator.parentNode.removeChild(gainIndicator);
@@ -992,8 +1044,12 @@ class SimpleGalgameEngine {
         this.hideChoices();
         
         // 跳转到指定场景
-        this.currentSceneId = choice.next;
-        this.showCurrentScene();
+        if (choice.next === 'free_chat') {
+            this.handleFreeChatTransition();
+        } else {
+            this.currentSceneId = choice.next;
+            this.showCurrentScene();
+        }
     }
     
     nextScene() {
@@ -1007,6 +1063,11 @@ class SimpleGalgameEngine {
         // 严格按照剧本顺序推进
         let nextSceneId;
         if (currentScene && currentScene.next) {
+            // 检查是否是特殊跳转
+            if (currentScene.next === 'free_chat') {
+                this.handleFreeChatTransition();
+                return;
+            }
             // 使用剧本中指定的下一个场景ID
             nextSceneId = currentScene.next;
         } else {

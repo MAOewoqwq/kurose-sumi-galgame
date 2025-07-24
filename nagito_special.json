@@ -1,0 +1,156 @@
+{
+  "title": "狛枝凪斗特殊互动剧情",
+  "description": "黒瀨澄与狛枝凪斗的心理分析对话",
+  "author": "Claude AI",
+  "version": "1.0",
+  "characters": {
+    "kurose": {
+      "name": "黒瀨澄",
+      "sprites": {
+        "normal": "原始表情.PNG",
+        "smile": "微笑.PNG",
+        "worried": "担心.PNG"
+      }
+    },
+    "nagito": {
+      "name": "狛枝凪斗",
+      "sprites": {}
+    }
+  },
+  "backgrounds": {
+    "therapy_room": "IMG_3350.PNG"
+  },
+  "variables": {},
+  "scenes": [
+    {
+      "id": 1,
+      "type": "choice",
+      "background": "therapy_room",
+      "character": "kurose",
+      "sprite": "worried",
+      "position": "center",
+      "text": "",
+      "choices": [
+        {
+          "text": "💬 和他继续聊天",
+          "next": 2
+        },
+        {
+          "text": "🚪 离开",
+          "next": 10
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "dialog",
+      "speaker": "黒瀨澄",
+      "character": "kurose",
+      "sprite": "smile",
+      "position": "center",
+      "text": "其实，我觉得你根本不像看起来的那样疯狂呢。",
+      "background": "therapy_room",
+      "next": 3
+    },
+    {
+      "id": 3,
+      "type": "dialog",
+      "speaker": "狛枝凪斗",
+      "character": "nagito",
+      "sprite": "normal",
+      "position": "center",
+      "text": "诶？我吗？",
+      "background": "therapy_room",
+      "affection": 1,
+      "next": 4
+    },
+    {
+      "id": 4,
+      "type": "dialog",
+      "speaker": "狛枝凪斗",
+      "character": "nagito",
+      "sprite": "normal",
+      "position": "center",
+      "text": "哈哈...澄同学真是有趣呢。能够这样理解我，真的让我感到很意外。",
+      "background": "therapy_room",
+      "next": 5
+    },
+    {
+      "id": 5,
+      "type": "dialog",
+      "speaker": "黒瀨澄",
+      "character": "kurose",
+      "sprite": "normal",
+      "position": "center", 
+      "text": "每个人的行为背后都有其心理动机。你对希望的执着，或许正是因为内心深处对绝望的恐惧吧？",
+      "background": "therapy_room",
+      "next": 6
+    },
+    {
+      "id": 6,
+      "type": "dialog",
+      "speaker": "狛枝凪斗",
+      "character": "nagito",
+      "sprite": "normal",
+      "position": "center",
+      "text": "...澄同学，你真的很厉害呢。作为心理分析师，你看得比任何人都要深入。",
+      "background": "therapy_room",
+      "next": 7
+    },
+    {
+      "id": 7,
+      "type": "choice",
+      "speaker": "黒瀨澄",
+      "character": "kurose", 
+      "sprite": "normal",
+      "position": "center",
+      "text": "如果你愿意的话...我想更深入地了解你的内心世界。",
+      "background": "therapy_room",
+      "choices": [
+        {
+          "text": "💭 继续深入交流",
+          "next": 8,
+          "affection": 1
+        },
+        {
+          "text": "🤝 就此结束对话",
+          "next": 9
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "dialog",
+      "speaker": "狛枝凪斗",
+      "character": "nagito",
+      "sprite": "normal", 
+      "position": "center",
+      "text": "真的吗？澄同学愿意倾听我的想法...这让我感到前所未有的温暖。也许，我确实需要这样的理解。",
+      "background": "therapy_room",
+      "affection": 2,
+      "next": "free_chat"
+    },
+    {
+      "id": 9,
+      "type": "dialog",
+      "speaker": "狛枝凪斗",
+      "character": "nagito",
+      "sprite": "normal",
+      "position": "center", 
+      "text": "嗯，我明白。谢谢你愿意花时间和我交流，澄同学。这已经足够了。",
+      "background": "therapy_room",
+      "next": "free_chat"
+    },
+    {
+      "id": 10,
+      "type": "dialog",
+      "speaker": "黒瀨澄", 
+      "character": "kurose",
+      "sprite": "normal",
+      "position": "center",
+      "text": "...还是算了吧。也许现在还不是深入交流的时候。每个人都有自己的节奏。",
+      "background": "therapy_room",
+      "next": "free_chat"
+    }
+  ]
+}
