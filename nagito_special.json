@@ -24,6 +24,17 @@
   "scenes": [
     {
       "id": 1,
+      "type": "dialog",
+      "speaker": "黒瀨澄",
+      "character": "kurose",
+      "sprite": "worried",
+      "position": "center",
+      "text": "狛枝凪斗...狛枝同学...老实说，你的思维模式让我这个心理分析师都感到困惑。你对希望的执着已经到了病态的程度...我很担心你的心理状态。",
+      "background": "therapy_room",
+      "next": 2
+    },
+    {
+      "id": 2,
       "type": "choice",
       "background": "therapy_room",
       "character": "kurose",
@@ -33,16 +44,16 @@
       "choices": [
         {
           "text": "💬 和他继续聊天",
-          "next": 2
+          "next": 3
         },
         {
           "text": "🚪 离开",
-          "next": 10
+          "next": 11
         }
       ]
     },
     {
-      "id": 2,
+      "id": 3,
       "type": "dialog",
       "speaker": "黒瀨澄",
       "character": "kurose",
@@ -50,18 +61,6 @@
       "position": "center",
       "text": "其实，我觉得你根本不像看起来的那样疯狂呢。",
       "background": "therapy_room",
-      "next": 3
-    },
-    {
-      "id": 3,
-      "type": "dialog",
-      "speaker": "狛枝凪斗",
-      "character": "nagito",
-      "sprite": "normal",
-      "position": "center",
-      "text": "诶？我吗？",
-      "background": "therapy_room",
-      "affection": 1,
       "next": 4
     },
     {
@@ -71,12 +70,24 @@
       "character": "nagito",
       "sprite": "normal",
       "position": "center",
-      "text": "哈哈...澄同学真是有趣呢。能够这样理解我，真的让我感到很意外。",
+      "text": "诶？我吗？",
       "background": "therapy_room",
+      "affection": 1,
       "next": 5
     },
     {
       "id": 5,
+      "type": "dialog",
+      "speaker": "狛枝凪斗",
+      "character": "nagito",
+      "sprite": "normal",
+      "position": "center",
+      "text": "哈哈...澄同学真是有趣呢。能够这样理解我，真的让我感到很意外。",
+      "background": "therapy_room",
+      "next": 6
+    },
+    {
+      "id": 6,
       "type": "dialog",
       "speaker": "黒瀨澄",
       "character": "kurose",
@@ -84,10 +95,10 @@
       "position": "center", 
       "text": "每个人的行为背后都有其心理动机。你对希望的执着，或许正是因为内心深处对绝望的恐惧吧？",
       "background": "therapy_room",
-      "next": 6
+      "next": 7
     },
     {
-      "id": 6,
+      "id": 7,
       "type": "dialog",
       "speaker": "狛枝凪斗",
       "character": "nagito",
@@ -95,10 +106,10 @@
       "position": "center",
       "text": "...澄同学，你真的很厉害呢。作为心理分析师，你看得比任何人都要深入。",
       "background": "therapy_room",
-      "next": 7
+      "next": 8
     },
     {
-      "id": 7,
+      "id": 8,
       "type": "choice",
       "speaker": "黒瀨澄",
       "character": "kurose", 
@@ -109,17 +120,17 @@
       "choices": [
         {
           "text": "💭 继续深入交流",
-          "next": 8,
+          "next": 9,
           "affection": 1
         },
         {
           "text": "🤝 就此结束对话",
-          "next": 9
+          "next": 10
         }
       ]
     },
     {
-      "id": 8,
+      "id": 9,
       "type": "dialog",
       "speaker": "狛枝凪斗",
       "character": "nagito",
@@ -131,7 +142,7 @@
       "next": "free_chat"
     },
     {
-      "id": 9,
+      "id": 10,
       "type": "dialog",
       "speaker": "狛枝凪斗",
       "character": "nagito",
@@ -142,7 +153,7 @@
       "next": "free_chat"
     },
     {
-      "id": 10,
+      "id": 11,
       "type": "dialog",
       "speaker": "黒瀨澄", 
       "character": "kurose",

@@ -10,7 +10,8 @@ class SimpleGalgameEngine {
             affection: 0,
             freeChatMode: false,
             specialScriptMode: false,
-            originalScript: null
+            originalScript: null,
+            nagitoSpecialPending: false
         };
         
         // API配置
@@ -543,20 +544,13 @@ class SimpleGalgameEngine {
             } else if (this.gameState.specialUserType === 'xiaoming') {
                 return '啊...是你。小明，你是个非常善良又阳光的孩子。请你无论何时都要相信自己。';
             } else if (this.gameState.specialUserType === 'danganronpa') {
-                // 狛枝凪斗的特殊处理：先显示问候，后加载专属剧本
+                // 狛枝凪斗的特殊处理：先显示问候，点击后加载专属剧本
                 if (this.gameState.characterId === 'nagito') {
                     this.setDanganronpaEmotion(this.gameState.characterId);
-                    // 设置标记，在对话显示后加载剧本
-                    setTimeout(async () => {
-                        const success = await this.loadSpecialScript('nagito_special.json', true);
-                        if (success) {
-                            // 静默加载后直接显示剧本场景
-                            this.showCurrentScene();
-                        } else {
-                            // 加载失败，使用原来的选择方式
-                            this.showNagitoChoices();
-                        }
-                    }, 3000); // 3秒后加载特殊剧本，让用户先看完问候
+                    // 延迟设置标记，确保问候语完全显示后再允许跳转
+                    setTimeout(() => {
+                        this.gameState.nagitoSpecialPending = true;
+                    }, 100);
                     // 返回专属问候回答
                     return this.getDanganronpaResponse(this.gameState.characterName, this.gameState.characterId);
                 } else {
@@ -1058,6 +1052,20 @@ class SimpleGalgameEngine {
     }
     
     nextScene() {
+        // 检查是否需要加载狛枝凪斗的特殊剧本
+        if (this.gameState.nagitoSpecialPending) {
+            this.gameState.nagitoSpecialPending = false;
+            this.loadSpecialScript('nagito_special.json', true).then(success => {
+                if (success) {
+                    this.showCurrentScene();
+                } else {
+                    // 加载失败，使用原来的选择方式
+                    this.showNagitoChoices();
+                }
+            });
+            return;
+        }
+        
         const currentScene = this.getCurrentScene();
         
         // 如果是选择场景或输入场景，不自动推进
