@@ -323,26 +323,60 @@ class SimpleGalgameEngine {
             return 'worried';
         }
         
-        // 害羞/恋爱相关关键词
+        // 害羞相关 - 增加更多触发条件
         if (userLower.includes('喜欢') || userLower.includes('恋爱') ||
             userLower.includes('表白') || userLower.includes('心动') ||
             userLower.includes('暗恋') || userLower.includes('约会') ||
-            replyLower.includes('感情') || replyLower.includes('心意')) {
-            return Math.random() > 0.5 ? 'shy' : 'shy_worried';
+            userLower.includes('可爱') || userLower.includes('美') ||
+            userLower.includes('漂亮') || userLower.includes('夸') ||
+            userLower.includes('温柔') || userLower.includes('喜欢你') ||
+            replyLower.includes('感情') || replyLower.includes('心意') ||
+            replyLower.includes('不好意思') || replyLower.includes('害羞')) {
+            // 如果是被夸奖或者恋爱话题，更倾向于害羞
+            if (userLower.includes('夸') || userLower.includes('可爱') || 
+                userLower.includes('漂亮') || userLower.includes('喜欢你')) {
+                return 'shy';
+            }
+            // 如果涉及担心或者不确定的感情，使用害羞担心
+            if (userLower.includes('怎么办') || userLower.includes('不知道') ||
+                replyLower.includes('担心') || replyLower.includes('不确定')) {
+                return 'shy_worried';
+            }
+            return Math.random() > 0.6 ? 'shy' : 'shy_worried';
         }
         
-        // 开心/积极相关关键词
+        // 开心/眯眼笑相关 - 更多愉快场景
         if (userLower.includes('开心') || userLower.includes('高兴') ||
             userLower.includes('快乐') || userLower.includes('兴奋') ||
-            userLower.includes('成功') || userLower.includes('谢谢') ||
-            replyLower.includes('很好') || replyLower.includes('棒')) {
-            return Math.random() > 0.6 ? 'happy' : 'smile';
+            userLower.includes('成功') || userLower.includes('太好了') ||
+            userLower.includes('哈哈') || userLower.includes('有趣') ||
+            userLower.includes('好玩') || userLower.includes('恭喜') ||
+            userLower.includes('太棒了') || userLower.includes('真好') ||
+            replyLower.includes('很好') || replyLower.includes('棒') ||
+            replyLower.includes('开心') || replyLower.includes('高兴') ||
+            replyLower.includes('恭喜')) {
+            // 特别开心的情况用眯眼笑
+            if (userLower.includes('太好了') || userLower.includes('太棒了') ||
+                userLower.includes('哈哈') || replyLower.includes('恭喜')) {
+                return 'happy';
+            }
+            return Math.random() > 0.5 ? 'happy' : 'smile';
+        }
+        
+        // 感谢相关 - 可能害羞也可能微笑
+        if (userLower.includes('谢谢') || userLower.includes('感谢')) {
+            // 如果是特别真诚的感谢，可能会害羞
+            if (userLower.includes('真的谢谢') || userLower.includes('非常感谢') ||
+                userLower.includes('太感谢了')) {
+                return Math.random() > 0.7 ? 'shy' : 'smile';
+            }
+            return 'smile';
         }
         
         // 微笑/温和相关内容
         if (replyLower.includes('不错') || replyLower.includes('可以') ||
             replyLower.includes('理解') || replyLower.includes('支持') ||
-            userLower.includes('你好') || userLower.includes('谢谢')) {
+            userLower.includes('你好')) {
             return 'smile';
         }
         
