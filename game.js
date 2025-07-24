@@ -1,6 +1,7 @@
 // Galgame引擎 - MVP版本
 class SimpleGalgameEngine {
     constructor() {
+        console.log('🎮 游戏引擎启动 - 版本: v2025.07.24.15:30 - 狛枝对话已更新');
         this.script = null;
         this.currentSceneId = 1;
         this.gameState = {
@@ -573,12 +574,15 @@ class SimpleGalgameEngine {
             } else if (this.gameState.specialUserType === 'danganronpa') {
                 // 狛枝凪斗的特殊处理：显示符合原作的问候语，下次点击跳转到选择场景
                 if (this.gameState.characterId === 'nagito') {
-                    console.log('🎯 狛枝凪斗：显示原作问候语，设置特殊跳转');
+                    console.log('🎯 狛枝凪斗：显示新版本问候语，设置特殊跳转');
+                    console.log('📝 当前狛枝对话版本: v2025.07.24.15:30');
                     this.setDanganronpaEmotion(this.gameState.characterId);
                     // 设置标记：下次点击跳转到选择场景16
                     this.gameState.nagitoNeedChoice = true;
                     // 返回符合原作的问候语
-                    return this.getDanganronpaResponse(this.gameState.characterName, this.gameState.characterId);
+                    const response = this.getDanganronpaResponse(this.gameState.characterName, this.gameState.characterId);
+                    console.log('🗣️ 狛枝对话内容:', response);
+                    return response;
                 } else {
                     // 其他弹丸论破角色的正常处理
                     this.setDanganronpaEmotion(this.gameState.characterId);

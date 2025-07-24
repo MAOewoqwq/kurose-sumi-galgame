@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>狛枝凪斗对话调试</title>
+</head>
+<body>
+    <h1>狛枝凪斗对话调试工具</h1>
+    <div id="debug-info"></div>
+    
+    <script>
+        // 模拟game.js中的相关逻辑
+        class DebugGame {
+            constructor() {
+                this.gameState = {
+                    isSpecialUser: false,
+                    specialUserType: null,
+                    characterName: null,
+                    characterId: null
+                };
+            }
+            
+            checkSpecialName(name) {
+                const danganronpaCharacters = {
+                    '狛枝凪斗': 'nagito'
+                };
+                
+                if (danganronpaCharacters[name]) {
+                    this.gameState.isSpecialUser = true;
+                    this.gameState.specialUserType = 'danganronpa';
+                    this.gameState.characterName = name;
+                    this.gameState.characterId = danganronpaCharacters[name];
+                    console.log('检测到弹丸论破角色:', name);
+                    return true;
+                }
+                return false;
+            }
+            
+            getDanganronpaResponse(characterName, characterId) {
+                const responses = {
+                    'nagito': `狛枝同学，是你啊。你昨天好像没有来学校，是出了什么事了吗？`
+                };
+                return responses[characterId] || '默认回复';
+            }
+            
+            processSpecialResponse(originalText) {
+                if (this.gameState.isSpecialUser && 
+                    this.gameState.specialUserType === 'danganronpa') {
+                    if (this.gameState.characterId === 'nagito') {
+                        console.log('🎯 狛枝凪斗：显示原作问候语');
+                        return this.getDanganronpaResponse(this.gameState.characterName, this.gameState.characterId);
+                    }
+                }
+                return originalText;
+            }
+        }
+        
+        // 调试测试
+        const game = new DebugGame();
+        const debugInfo = document.getElementById('debug-info');
+        
+        function runTest() {
+            debugInfo.innerHTML = '<h2>调试结果</h2>';
+            
+            // 测试输入"狛枝凪斗"
+            const input = '狛枝凪斗';
+            debugInfo.innerHTML += `<p><strong>输入：</strong> ${input}</p>`;
+            
+            // 检查特殊名字
+            const detected = game.checkSpecialName(input);
+            debugInfo.innerHTML += `<p><strong>检测结果：</strong> ${detected}</p>`;
+            debugInfo.innerHTML += `<p><strong>游戏状态：</strong></p>`;
+            debugInfo.innerHTML += `<ul>
+                <li>isSpecialUser: ${game.gameState.isSpecialUser}</li>
+                <li>specialUserType: ${game.gameState.specialUserType}</li>
+                <li>characterName: ${game.gameState.characterName}</li>
+                <li>characterId: ${game.gameState.characterId}</li>
+            </ul>`;
+            
+            // 处理特殊回复
+            const response = game.processSpecialResponse('原始文本');
+            debugInfo.innerHTML += `<p><strong>最终回复：</strong> ${response}</p>`;
+            
+            // 验证第613行的内容
+            const nagito613 = game.getDanganronpaResponse('狛枝凪斗', 'nagito');
+            debugInfo.innerHTML += `<p><strong>第613行内容：</strong> ${nagito613}</p>`;
+        }
+        
+        // 自动运行测试
+        runTest();
+    </script>
+</body>
+</html>
