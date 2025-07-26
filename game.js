@@ -398,8 +398,10 @@ class SimpleGalgameEngine {
             this.currentSceneId = 1;
             this.gameState.specialScriptMode = true;
             
-            // 清理狛枝相关状态，避免干扰特殊剧本
-            this.clearNagitoStates();
+            // 清理其他狛枝状态，但保留nagitoNeedChoice用于主剧本跳转
+            this.gameState.nagitoGreetingShown = false;
+            this.gameState.nagitoSpecialPending = false;
+            // 注意：不清除nagitoNeedChoice，因为狛枝使用主剧本流程
             
             // 初始化变量
             if (newScript.variables) {
@@ -1089,9 +1091,11 @@ class SimpleGalgameEngine {
         
         console.log('🔄 nextScene调用 - 当前场景:', currentScene?.id, '特殊剧本模式:', this.gameState.specialScriptMode, '场景类型:', currentScene?.type);
         
-        // 狛枝凪斗的特殊处理：从第6场景跳转到选择场景16
-        if (this.gameState.nagitoNeedChoice && currentScene && currentScene.id === 6) {
-            console.log('🔄 狛枝凪斗：跳转到选择场景16');
+        // 狛枝凪斗的特殊处理：检测到标记后跳转到选择场景16
+        if (this.gameState.nagitoNeedChoice && 
+            this.gameState.characterId === 'nagito' && 
+            this.gameState.specialUserType === 'danganronpa') {
+            console.log('🔄 狛枝凪斗：跳转到选择场景16，当前场景:', currentScene?.id);
             this.gameState.nagitoNeedChoice = false;
             
             // 验证目标场景是否存在
