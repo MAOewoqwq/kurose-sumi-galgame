@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { message } = req.body;
+    const { message, analyzeEmotion } = req.body;
     
     if (!message) {
       return res.status(400).json({ error: 'Message is required' });
@@ -45,7 +45,15 @@ export default async function handler(req, res) {
 【回复风格】
 - 保持简短，符合日式游戏对话风格
 - 语气温和，体现出专业心理咨询师的素质
-- 适当使用"..."表现思考或害羞的停顿`;
+- 适当使用"..."表现思考或害羞的停顿
+
+${analyzeEmotion ? `【情感分析要求】
+请在回复的最后，用[EMOTION_SCORE:X]的格式标注用户消息的情感倾向分数。
+- X是-1到1之间的数字
+- 正面情感（赞美、关心、爱意等）：0.5到1
+- 中性情感：-0.5到0.5
+- 负面情感（批评、冷漠、恶意等）：-1到-0.5
+例如：你的话真温暖...[EMOTION_SCORE:0.8]` : ''}`;
 
     const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
       method: 'POST',
@@ -69,9 +77,20 @@ export default async function handler(req, res) {
     }
 
     const data = await response.json();
-    const reply = data.choices[0].message.content;
+    let reply = data.choices[0].message.content;
+    let emotionScore = null;
 
-    return res.status(200).json({ reply });
+    // 如果请求了情感分析，解析分数
+    if (analyzeEmotion) {
+      const scoreMatch = reply.match(/\[EMOTION_SCORE:(-?\d+\.?\d*)\]/);
+      if (scoreMatch) {
+        emotionScore = parseFloat(scoreMatch[1]);
+        // 移除分数标记，只返回纯对话
+        reply = reply.replace(/\[EMOTION_SCORE:(-?\d+\.?\d*)\]/, '').trim();
+      }
+    }
+
+    return res.status(200).json({ reply, emotionScore });
 
   } catch (error) {
     console.error('DeepSeek API error:', error);

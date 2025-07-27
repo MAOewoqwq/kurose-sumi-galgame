@@ -191,36 +191,6 @@
       "character": "kurose",
       "sprite": "smile",
       "position": "center"
-    },
-    {
-      "id": 16,
-      "type": "choice",
-      "background": "therapy_room",
-      "character": "kurose",
-      "sprite": "worried",
-      "position": "center",
-      "text": "",
-      "choices": [
-        {
-          "text": "💬 和他继续聊天",
-          "next": 17
-        },
-        {
-          "text": "🚪 离开",
-          "next": "free_chat"
-        }
-      ]
-    },
-    {
-      "id": 17,
-      "type": "dialog",
-      "speaker": "狛枝凪斗",
-      "character": "nagito",
-      "sprite": "normal",
-      "position": "center",
-      "text": "啊...黑濑同学竟然愿意和我这样的人交流。哈哈...不过，像我这样毫无价值的人，真的值得你花时间分析吗？你的关心对我来说太过珍贵了...我只是个普通的幸运学生而已。",
-      "background": "therapy_room",
-      "next": "free_chat"
     }
   ]
 }

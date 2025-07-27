@@ -1,0 +1,158 @@
+{
+  "title": "川崎蝾井特殊剧情",
+  "description": "黒瀬澄与川崎蝾井的双角色对话剧情",
+  "characters": {
+    "kurose": {
+      "name": "黒瀬澄",
+      "sprites": {
+        "normal": "原始表情.PNG",
+        "smile": "微笑.PNG",
+        "shy": "抱着肩膀.PNG",
+        "worried": "担心.PNG",
+        "shy_worried": "害羞担心.PNG",
+        "angry": "有点生气.PNG",
+        "happy": "眯眼笑.PNG"
+      }
+    },
+    "kawasaki": {
+      "name": "川崎蝾井",
+      "sprites": {
+        "normal": "川崎普通眼神.PNG",
+        "smoking": "川崎抽烟.PNG",
+        "smile": "川崎眯眼笑.PNG",
+        "shy": "川崎非常害羞.PNG"
+      }
+    }
+  },
+  "backgrounds": {
+    "therapy_room": "IMG_3350.PNG",
+    "school_hallway": "IMG_3350.PNG", 
+    "kawasaki_ending": "合照.jpg"
+  },
+  "scenes": [
+    {
+      "id": 1,
+      "type": "dialog",
+      "speaker": "黒瀨澄",
+      "character": "kawasaki",
+      "sprite": "smoking",
+      "text": "川崎同学？没想到在这里遇到你，你在抽烟吗？",
+      "background": "therapy_room",
+      "next": 2
+    },
+    {
+      "id": 2,
+      "type": "dialog",
+      "speaker": "川崎蝾井",
+      "character": "kawasaki",
+      "sprite": "normal",
+      "text": "黒瀨同学，好巧..！抱歉，烟的味道会呛到你吗？我现在就掐掉...",
+      "background": "therapy_room",
+      "next": 3
+    },
+    {
+      "id": 3,
+      "type": "dialog",
+      "speaker": "黒瀨澄",
+      "character": "kurose",
+      "sprite": "smile",
+      "text": "不，这没什么。刚刚我遇到了罪木同学，她好像在找你。",
+      "background": "therapy_room",
+      "next": 4
+    },
+    {
+      "id": 4,
+      "type": "dialog",
+      "speaker": "川崎蝾井",
+      "character": "kawasaki",
+      "sprite": "smile",
+      "text": "是吗？罪木在找我？谢谢你告诉我",
+      "background": "therapy_room",
+      "next": 5
+    },
+    {
+      "id": 5,
+      "type": "dialog",
+      "speaker": "黒瀨澄",
+      "character": "kurose",
+      "sprite": "happy",
+      "text": "能帮助到你我很开心，话说，我们好像算是一个行业的呢？",
+      "background": "therapy_room",
+      "next": 6
+    },
+    {
+      "id": 6,
+      "type": "dialog",
+      "speaker": "黒瀨澄",
+      "character": "kurose",
+      "sprite": "smile",
+      "text": "罪木同学…似乎很担心你呢。",
+      "background": "therapy_room",
+      "next": 7
+    },
+    {
+      "id": 7,
+      "type": "dialog",
+      "speaker": "川崎蝾井",
+      "character": "kawasaki",
+      "sprite": "shy",
+      "text": "真的吗？她和你说了什么吗…啊不，没什么。",
+      "background": "therapy_room",
+      "next": 8
+    },
+    {
+      "id": 8,
+      "type": "dialog",
+      "speaker": "黒瀨澄",
+      "character": "kurose",
+      "sprite": "happy",
+      "text": "不，什么都没说。但是她的神情暴露了一切，她似乎说要去医务室等你。",
+      "background": "therapy_room",
+      "next": 9
+    },
+    {
+      "id": 9,
+      "type": "dialog",
+      "speaker": "川崎蝾井",
+      "character": "kawasaki",
+      "sprite": "smile",
+      "text": "明白了，谢谢你黑濑同学！说实话，我们在一起工作非常开心呢，如果你有不舒服，欢迎来找我们…",
+      "background": "therapy_room",
+      "next": 10
+    },
+    {
+      "id": 10,
+      "type": "dialog",
+      "speaker": "黒瀨澄",
+      "character": "kurose",
+      "sprite": "smile",
+      "text": "真好啊…",
+      "background": "therapy_room",
+      "next": 11
+    },
+    {
+      "id": 11,
+      "type": "scene_change",
+      "title": "场景变化",
+      "text": "",
+      "background": "kawasaki_ending",
+      "next": 12
+    },
+    {
+      "id": 12,
+      "type": "narration",
+      "speaker": "黒瀨澄",
+      "text": "真让人羡慕呢",
+      "background": "kawasaki_ending",
+      "next": 13
+    },
+    {
+      "id": 13,
+      "type": "ending",
+      "text": "点击返回",
+      "background": "kawasaki_ending",
+      "special_action": "return_to_main",
+      "next": null
+    }
+  ]
+}

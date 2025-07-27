@@ -89,12 +89,21 @@ body {
   flex-direction: column;
   position: relative;
   overflow: hidden;
-  background: url('assets/backgrounds/IMG_3350.PNG') center/cover no-repeat;
-  /* 测试用红色背景，如果看到红色说明CSS生效但图片路径有问题 */
+  /* 默认背景移到伪元素中，方便动态控制 */
   background-color: #ffeeee;
 }
 
-.chat-window::before {
+/* 默认背景通过伪元素显示 - 移除，改用::before统一控制 */
+
+/* 当有custom-background类时，强制移除原始背景 */
+.chat-window.custom-background {
+  background: none !important;
+  background-image: none !important;
+  background-color: #000000 !important; /* 黑色背景 */
+}
+
+/* 默认背景只在没有no-default-bg类时显示 */
+.chat-window:not(.no-default-bg)::before {
   content: '';
   position: absolute;
   top: 0;
@@ -104,7 +113,16 @@ body {
   background: url('assets/backgrounds/IMG_3350.PNG') center/cover no-repeat;
   opacity: 0.4;
   z-index: 0;
-  transition: all 0.5s ease;
+  transition: opacity 0.3s ease, filter 0.3s ease;
+  will-change: opacity, filter;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* 当有no-default-bg类时，不创建::before伪元素 */
+.chat-window.no-default-bg::before {
+  content: none !important;
+  display: none !important;
 }
 
 .chat-window.background-1::before {
@@ -122,10 +140,34 @@ body {
   opacity: 0.2;
 }
 
-.chat-window.custom-background::before {
-  background: var(--background-image) center/cover no-repeat;
-  opacity: 0.6;
+/* 使用::after来显示合照背景 - 综合最佳效果 */
+.chat-window.custom-background::after {
+  content: '';
+  background-color: #1a1a1a; /* 深色背景作为后备，更好的视觉效果 */
+  background-image: var(--background-image);
+  background-repeat: no-repeat;
+  background-size: cover; /* 完全覆盖，轻微裁切边缘以填满容器 */
+  background-position: center 40%; /* 稍微向上调整，确保人物面部在视野中心 */
+  opacity: 1.0;  /* 完全不透明 */
+  filter: none;  /* 移除所有滤镜效果，保持原始显示 */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* 背景层级为1 */
+  image-rendering: -webkit-optimize-contrast; /* 优化图片渲染质量 */
+  image-rendering: crisp-edges; /* 保持清晰度 */
+  transition: opacity 0.3s ease;
+  will-change: opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
+
+/* 这个规则已经在上面定义了，删除重复 */
+
+/* 移除::after伪元素，避免重复 */
 
 .chat-content {
   flex: 1;
@@ -133,10 +175,15 @@ body {
   padding: 20px;
   border-bottom: 2px solid #A259FF;
   position: relative;
-  z-index: 1;
+  z-index: 5; /* 提高层级，确保在立绘(3-4)之上 */
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+}
+
+/* 当显示合照背景时，移除chat-content的半透明背景 */
+.chat-window.custom-background .chat-content {
+  background: transparent;
 }
 
 .message-display {
@@ -157,6 +204,8 @@ body {
   margin-right: auto;
   min-height: 50px;
   box-sizing: border-box;
+  position: relative;
+  z-index: 10; /* 最高层级，确保对话框在所有元素上面 */
 }
 
 .message-display:hover {
@@ -200,7 +249,7 @@ body {
   gap: 10px;
   border-top: 1px solid #ddd;
   position: relative;
-  z-index: 1;
+  z-index: 5; /* 输入区域层级为5，在所有内容之上 */
   backdrop-filter: blur(5px);
 }
 
@@ -244,7 +293,7 @@ body {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 1;
+  z-index: 3 !important; /* 立绘层级为3，在内容之上 */
 }
 
 .character-sprite {
@@ -262,29 +311,30 @@ body {
   min-height: 567px !important;
   object-fit: contain !important;
   object-position: center center !important;
-  transition: opacity 0.3s ease !important;
-  opacity: 0;
-  filter: brightness(1) contrast(1.1) saturate(1.1) sharpen(1px);
+  transition: opacity 0.2s ease !important;
+  opacity: 1 !important; /* 改为默认完全显示 */
+  filter: brightness(1) contrast(1.1) saturate(1.1);
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
-  image-rendering: pixelated;
-  -webkit-font-smoothing: subpixel-antialiased;
-  -moz-osx-font-smoothing: auto;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   box-sizing: border-box !important;
   margin: 0 !important;
   padding: 0 !important;
+  z-index: 4 !important; /* 确保在所有元素之上 */
 }
 
 .character-sprite.show {
   opacity: 1 !important;
 }
 
+/* 隐藏状态 */
 .character-sprite.fade-out {
   opacity: 0 !important;
-  transition: opacity 0.3s ease !important;
 }
+
+/* 删除重复的z-index设置 */
+
 
 .character-sprite.right,
 .character-sprite.left,
@@ -300,6 +350,46 @@ body {
   transform: none !important;
 }
 
+/* 川崎蝾井立绘严格定位样式 - 与黒瀨澄完全一致 */
+.character-sprite[src*="川崎普通眼神.PNG"],
+.character-sprite[src*="川崎眯眼笑.PNG"], 
+.character-sprite[src*="川崎非常害羞.PNG"],
+.character-sprite[src*="川崎抽烟.PNG"] {
+  position: absolute !important;
+  width: 400px !important;
+  height: 567px !important;
+  left: 80px !important;
+  top: 50px !important;
+  right: auto !important;
+  bottom: auto !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  transition: opacity 0.2s ease !important; /* 优化为0.2s提升流畅度 */
+  transform: none !important;
+  max-width: 400px !important;
+  max-height: 567px !important;
+  min-width: 400px !important;
+  min-height: 567px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  filter: brightness(1) contrast(1.1) saturate(1.1) !important;
+  image-rendering: -webkit-optimize-contrast !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+}
+
+/* 确保黒瀨澄立绘也使用优化的过渡时间 */
+.character-sprite[src*="原始表情.PNG"],
+.character-sprite[src*="微笑.PNG"],
+.character-sprite[src*="眯眼笑.PNG"],
+.character-sprite[src*="抱着肩膀.PNG"],
+.character-sprite[src*="担心.PNG"],
+.character-sprite[src*="害羞担心.PNG"],
+.character-sprite[src*="有点生气.PNG"] {
+  transition: opacity 0.2s ease !important; /* 统一优化过渡时间 */
+}
+
 /* 玩家输入框样式 */
 .input-container {
   margin-top: 15px;
@@ -310,7 +400,7 @@ body {
   bottom: 8px;
   left: 12px;
   right: 12px;
-  z-index: 10;
+  z-index: 6; /* 输入框层级为6 */
 }
 
 .player-input {
