@@ -15,9 +15,11 @@
     "nagito": {
       "name": "狛枝凪斗",
       "sprites": {
-        "normal": "狛枝普通.PNG",
-        "smile": "狛枝微笑.PNG",
-        "surprised": "狛枝惊讶.PNG"
+        "normal": "基础表情.PNG",
+        "surprised": "基础表情.PNG",
+        "laugh": "哈哈.PNG",
+        "moved": "有点感动.PNG",
+        "sad": "有点难过.PNG"
       }
     }
   },
@@ -83,7 +85,7 @@
       "type": "dialog",
       "speaker": "狛枝凪斗",
       "character": "nagito",
-      "sprite": "surprised",
+      "sprite": "laugh",
       "position": "center",
       "text": "诶？黑濑同学在说我吗？...哈哈，我这样的人竟然能得到超高校级心理分析师的关注，真是太幸运了。",
       "background": "therapy_room",
@@ -149,7 +151,7 @@
       "type": "dialog",
       "speaker": "狛枝凪斗",
       "character": "nagito",
-      "sprite": "smile", 
+      "sprite": "moved", 
       "position": "center",
       "text": "真的吗？黑濑同学愿意...倾听我这样的人的想法？...这种温暖的感觉，对我来说太过珍贵了。虽然我不确定自己是否配得上这样的关心，但...也许这就是希望吧。",
       "background": "therapy_room",
@@ -161,7 +163,7 @@
       "type": "dialog",
       "speaker": "狛枝凪斗",
       "character": "nagito",
-      "sprite": "smile",
+      "sprite": "sad",
       "position": "center", 
       "text": "嗯，我明白。谢谢黑濑同学愿意花时间和我这样的人交流...光是这样就已经让我感到非常幸运了。这份温柔，我会好好珍惜的。",
       "background": "therapy_room",
